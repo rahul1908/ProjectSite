@@ -22,10 +22,10 @@ namespace ProjectSite.Restricted
         // Load clients into dropdown
         protected void LoadClients()
         {
-            string connString = ConfigurationManager.ConnectionStrings["Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd"].ConnectionString;
+            string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                string query = "SELECT Client_ID, ClientName FROM Clienttbl"; // Adjust this query to match your client table
+                string query = "SELECT Client_ID, Client_Name FROM Clienttbl"; // Adjust this query to match your client table
                 SqlCommand cmd = new SqlCommand(query, conn);
                 conn.Open();
                 ddlClient.DataSource = cmd.ExecuteReader();
@@ -38,10 +38,10 @@ namespace ProjectSite.Restricted
         // Handle form submission
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            string connString = ConfigurationManager.ConnectionStrings["Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd"].ConnectionString;
+            string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                string query = @"INSERT INTO Projects 
+                string query = @"INSERT INTO Projecttbl
                                 (Client_ID, Project_Name, Project_Description, Project_Start_date, Project_End_date, Project_Budget, Manager_ID) 
                                 VALUES 
                                 (@Client_ID, @Project_Name, @Project_Description, @Project_Start_date, @Project_End_date, @Project_Budget, @Manager_ID)";
