@@ -79,6 +79,7 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Manager <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/Restricted/AssignProjects">AssignProjects</a></li>
+                         <li><a class="dropdown-item" href="/Restricted/AddProject">Add Project</a></li>
                       
                     </ul>
                 </li>
