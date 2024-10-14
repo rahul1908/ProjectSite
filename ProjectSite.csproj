@@ -220,6 +220,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Account\Web.config" />
+    <Content Include="Restricted\AddProject.aspx" />
     <Content Include="Restricted\AssignProjects.aspx" />
     <Content Include="Restricted\RecordExpense.aspx" />
     <Content Include="Restricted\RecordTimesheet.aspx" />
@@ -406,6 +407,13 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Restricted\AddProject.aspx.cs">
+      <DependentUpon>AddProject.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Restricted\AddProject.aspx.designer.cs">
+      <DependentUpon>AddProject.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Restricted\AssignProjects.aspx.cs">
       <DependentUpon>AssignProjects.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
