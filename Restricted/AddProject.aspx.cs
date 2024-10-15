@@ -18,7 +18,7 @@ namespace ProjectSite.Restricted
                 // Check if user is logged in
                 if (User.Identity.IsAuthenticated)
                 {
-                    // Check if the user has the "Employee" role
+                    // Check if the user has the "Manager" role
                     if (User.IsInRole("Manager"))
                     {
                         // Get logged-in user's email
@@ -50,12 +50,17 @@ namespace ProjectSite.Restricted
                                     // Redirect to error page if the user is not in the Employee table
                                     Response.Redirect("~/ErrorPages/AccessDenied.aspx");
                                 }
+                                else
+                                {
+                                    // Load clients into the dropdown list
+                                    LoadClients();
+                                }
                             }
                         }
                     }
                     else
                     {
-                        // If the user is logged in but does not have the "Employee" role, redirect to access denied page
+                        // If the user is logged in but does not have the "Manager" role, redirect to access denied page
                         Response.Redirect("~/ErrorPages/AccessDenied.aspx");
                     }
                 }
@@ -63,13 +68,10 @@ namespace ProjectSite.Restricted
                 {
                     // Redirect to login page if the user is not authenticated
                     Response.Redirect("~/Account/Login.aspx");
-
                 }
-
             }
-            }
+        }
 
-        // Load clients into dropdown
         protected void LoadClients()
         {
             string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
@@ -78,10 +80,14 @@ namespace ProjectSite.Restricted
                 string query = "SELECT Client_ID, Client_Name FROM Clienttbl"; // Adjust this query to match your client table
                 SqlCommand cmd = new SqlCommand(query, conn);
                 conn.Open();
+
                 ddlClient.DataSource = cmd.ExecuteReader();
                 ddlClient.DataTextField = "Client_Name";
                 ddlClient.DataValueField = "Client_ID";
                 ddlClient.DataBind();
+
+                // Optionally, add a default item (e.g., "Select a Client")
+                ddlClient.Items.Insert(0, new ListItem("--Select a Client--", "0"));
             }
         }
 
