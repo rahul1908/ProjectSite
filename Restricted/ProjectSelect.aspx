@@ -15,10 +15,16 @@
                     </div>
                     <div class="card-body p-4">
                         <div class="mb-3">
-                            <asp:DropDownList ID="ddlProjects" runat="server" CssClass="form-select" DataTextField="ProjectName" DataValueField="ProjectId" AutoPostBack="True" OnSelectedIndexChanged="ddlProjects_SelectedIndexChanged">
+                            <asp:DropDownList ID="ddlProjects" runat="server" CssClass="form-select" DataTextField="Project_Name" DataValueField="Project_ID" AutoPostBack="True" OnSelectedIndexChanged="ddlProjects_SelectedIndexChanged" DataSourceID="SqlDataSource1">
                             </asp:DropDownList>
                         </div>
                         <div class="d-grid gap-2">
+                            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" SelectCommand="SELECT DISTINCT Projecttbl.Project_ID, Projecttbl.Project_Name FROM Projecttbl INNER JOIN ProjectAssignmenttbl ON Projecttbl.Project_ID = ProjectAssignmenttbl.Project_ID WHERE (ProjectAssignmenttbl.Employee_ID = @employeeID)">
+                                <SelectParameters>
+                                    <asp:SessionParameter Name="employeeID" SessionField="user_id" />
+                                </SelectParameters>
+                            </asp:SqlDataSource>
+                            <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
                             <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-primary btn-block" OnClick="btnSubmit_Click" />
                         </div>
                     </div>

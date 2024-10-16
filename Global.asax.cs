@@ -25,6 +25,7 @@ namespace ProjectSite
         protected void Session_Start(object sender, EventArgs e)
         {
             Session.Add("user_id", 0);
+            Session.Add("project_id", 0);
         }
     }
 }

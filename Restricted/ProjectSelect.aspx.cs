@@ -18,7 +18,7 @@ namespace ProjectSite.Restricted
                 if (User.Identity.IsAuthenticated)
                 {
                     // Check if the user has the "Employee" role
-                    if (User.IsInRole("Manager"))
+                    if (User.IsInRole("Employee"))
                     {
                         // Get logged-in user's email
                         string userEmail = User.Identity.Name;
@@ -81,21 +81,23 @@ namespace ProjectSite.Restricted
         }
         private void LoadProjects(string connectionString)
         {
-            // Using SqlConnection to fetch project details
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                SqlCommand command = new SqlCommand("SELECT Project_ID, Project_Name FROM Projecttbl", connection);
-                SqlDataReader reader = command.ExecuteReader();
+            //// Using SqlConnection to fetch project details
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //    connection.Open();
+            //    SqlCommand command = new SqlCommand("SELECT DISTINCT Projecttbl.Project_ID, Projecttbl.Project_Name FROM Projecttbl INNER JOIN ProjectAssignmenttbl ON Projecttbl.Project_ID = ProjectAssignmenttbl.Project_ID WHERE ProjectAssignmenttbl.Employee_ID = @employeeID", connection);
+            //    command.Parameters.AddWithValue("@employeeID", Session["user_id"]);
 
-                // Bind the project data to the dropdown list
-                ddlProjects.DataSource = reader;
-                ddlProjects.DataTextField = "Project_Name";
-                ddlProjects.DataValueField = "Project_ID";
-                ddlProjects.DataBind();
+            //    SqlDataReader reader = command.ExecuteReader();
 
-                reader.Close();
-            }
+            //    // Bind the project data to the dropdown list
+            //    ddlProjects.DataSource = reader;
+            //    ddlProjects.DataTextField = "Project_Name";
+            //    ddlProjects.DataValueField = "Project_ID";
+            //    ddlProjects.DataBind();
+
+            //    reader.Close();
+            //}
         }
         protected void ddlProjects_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -105,6 +107,8 @@ namespace ProjectSite.Restricted
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             // Handle form submission here
+            Session["project_id"] = ddlProjects.SelectedValue;
+            Label1.Text = Session["project_id"].ToString();
         }
 
 
