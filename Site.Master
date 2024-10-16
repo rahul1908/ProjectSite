@@ -6,115 +6,139 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title><%: Page.Title %> - Optimult</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
-</head>
+     <asp:ContentPlaceHolder ID="HeadContent" runat="server"></asp:ContentPlaceHolder>
+    <!-- Bootstrap CSS for improved UI -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
     <style>
+        /* Custom styling for navigation and layout */
         .nav-link {
             font-weight: bold;
-            color: black;
+            color: black !important;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .body-content {
+            padding-top: 80px; /* Spacing from the navbar */
+        }
+
+        .navbar {
+            background-color: #f8f9fa; /* Light background for better readability */
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #f8f9fa;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        /* Dropdown styling */
+        .dropdown-menu .dropdown-item {
+            color: #343a40;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #007bff;
+            color: #fff;
         }
     </style>
+</head>
 
-
-      <meta charset="utf-8" />
-    <title><%: Page.Title %></title>
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
 <body>
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
-                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
-                <%--Framework Scripts--%>
-                <asp:ScriptReference Name="MsAjaxBundle" />
                 <asp:ScriptReference Name="jquery" />
                 <asp:ScriptReference Name="bootstrap" />
-                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
-                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
-                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
-                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
-                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
-                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
-                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
-                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
-                <asp:ScriptReference Name="WebFormsBundle" />
-                <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" runat="server" href="~/">Optimult</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <!-- Left-aligned navigation links -->
-            <ul class="nav navbar-nav">
-                <li><a runat="server" href="~/">Home</a></li>
-                <li><a runat="server" href="~/About">About</a></li>
-                <li><a runat="server" href="~/Contact">Contact</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Employee <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <!--Employee Private pages  -->
-                        <li><a class="dropdown-item" href="/Restricted/ViewClaims">View Claims</a></li>
-                        <li><a class="dropdown-item" href="/Restricted/RecordExpense">Record Expense</a></li>
-                        <li><a class="dropdown-item" href="/Restricted/RecordTravel">Record Travel</a></li>
-                        <li><a class="dropdown-item" href="/Restricted/RecordTimesheet">Record Timesheet</a></li>
 
-                    </ul>
-                </li>
-                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Manager <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/Restricted/AssignProjects">AssignProjects</a></li>
-                         <li><a class="dropdown-item" href="/Restricted/AddProject">Add Project</a></li>
-                      
-                    </ul>
-                </li>
-            </ul>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <div class="container">
+                <a class="navbar-brand" runat="server" href="~/">Optimult</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <!-- Right-aligned Login/Logout buttons -->
-            <ul class="nav navbar-nav navbar-right">
-                <asp:LoginView runat="server" ViewStateMode="Disabled">
-                    <AnonymousTemplate>
-                       <li><a runat="server" href="~/Account/Register">Register</a></li>
-<li><a runat="server" href="~/Account/Login">Log in</a></li>
-                    </AnonymousTemplate>
-                    <LoggedInTemplate>
-                        <li class="nav-item">
-                            <a runat="server" href="~/Account/Manage" title="Manage your account">Hello, <%: Context.User.Identity.GetUserName() %> !</a>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <!-- Left-aligned navigation links -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/About">About</a></li>
+                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Contact">Contact</a></li>
+                        
+                        <!-- Employee Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="employeeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Employee</a>
+                            <ul class="dropdown-menu" aria-labelledby="employeeDropdown">
+                                <li><a class="dropdown-item" href="/Restricted/ViewClaims">View Claims</a></li>
+                                <li><a class="dropdown-item" href="/Restricted/RecordExpense">Record Expense</a></li>
+                                <li><a class="dropdown-item" href="/Restricted/RecordTravel">Record Travel</a></li>
+                                <li><a class="dropdown-item" href="/Restricted/ProjectSelect">Record Disbursement</a></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+
+                        <!-- Manager Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="managerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Manager</a>
+                            <ul class="dropdown-menu" aria-labelledby="managerDropdown">
+                                <li><a class="dropdown-item" href="/Restricted/AssignProjects">Assign Projects</a></li>
+                                <li><a class="dropdown-item" href="/Restricted/AddProject">Add Project</a></li>
+                            </ul>
                         </li>
-                    </LoggedInTemplate>
-                </asp:LoginView>
-            </ul>
+                    </ul>
+
+                    <!-- Right-aligned Login/Logout buttons -->
+                    <ul class="navbar-nav ms-auto">
+                        <asp:LoginView runat="server">
+                            <AnonymousTemplate>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Account/Register">Register</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Account/Login">Log in</a></li>
+                            </AnonymousTemplate>
+                            <LoggedInTemplate>
+                                <li class="nav-item">
+                                    <a class="nav-link" runat="server" href="~/Account/Manage">Hello, <%: Context.User.Identity.GetUserName() %>!</a>
+                                </li>
+                                <li class="nav-item">
+                                    <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" />
+                                </li>
+                            </LoggedInTemplate>
+                        </asp:LoginView>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main body content -->
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+            <hr />
         </div>
-    </div>
-</div>
 
-<!-- Main body content -->
-<div class="container body-content">
-    <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
-    <hr />
-    <footer>
-        <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
-    </footer>
-</div>
-
+        <!-- Sticky Footer -->
+        <footer>
+            <p>&copy; <%: DateTime.Now.Year %> - Optimult</p>
+        </footer>
     </form>
+
+    <!-- Bootstrap JavaScript for better responsiveness -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

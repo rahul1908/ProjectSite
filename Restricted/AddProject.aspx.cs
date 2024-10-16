@@ -69,6 +69,8 @@ namespace ProjectSite.Restricted
                     // Redirect to login page if the user is not authenticated
                     Response.Redirect("~/Account/Login.aspx");
                 }
+
+
             }
         }
 

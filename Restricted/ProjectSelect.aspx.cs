@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace ProjectSite.Restricted
 {
-    public partial class AssignProjects : System.Web.UI.Page
+    public partial class ProjectSelect : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -25,7 +25,7 @@ namespace ProjectSite.Restricted
 
                         // Define your connection string
                         string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
-
+                       
                         // Define the SQL query to check if the user exists in the Employee table
                         string query = "SELECT Employee_ID FROM Employeetbl WHERE Employee_Email = @Email";
 
@@ -42,11 +42,11 @@ namespace ProjectSite.Restricted
 
                                 // Execute the query and get the result
                                 int id = (int)cmd.ExecuteScalar();
-                              
+
 
                                 // If the count is 0, the user does not exist in the Employee table
                                 if (id == null)
-                                    
+
                                 {
                                     // Redirect to error page if the user is not in the Employee table
                                     Response.Redirect("~/ErrorPages/AccessDenied.aspx");
@@ -61,6 +61,8 @@ namespace ProjectSite.Restricted
 
                             }
                         }
+
+
                     }
                     else
                     {
@@ -75,8 +77,36 @@ namespace ProjectSite.Restricted
 
                 }
             }
+            LoadProjects("Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd");
+        }
+        private void LoadProjects(string connectionString)
+        {
+            // Using SqlConnection to fetch project details
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand("SELECT Project_ID, Project_Name FROM Projecttbl", connection);
+                SqlDataReader reader = command.ExecuteReader();
 
+                // Bind the project data to the dropdown list
+                ddlProjects.DataSource = reader;
+                ddlProjects.DataTextField = "Project_Name";
+                ddlProjects.DataValueField = "Project_ID";
+                ddlProjects.DataBind();
 
+                reader.Close();
             }
+        }
+        protected void ddlProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Handle project selection changes here
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+            // Handle form submission here
+        }
+
+
     }
 }
