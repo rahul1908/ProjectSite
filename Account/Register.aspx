@@ -34,6 +34,15 @@
                     ErrorMessage="Please enter a valid email address." />
             </div>
         </div>
+         <!-- Client Password -->
+         <div class="form-group">
+            <asp:Label runat="server" AssociatedControlID="ClientPassword" CssClass="col-md-2 control-label">Password</asp:Label>
+            <div class="col-md-10">
+                <asp:TextBox runat="server" ID="ClientPassword" TextMode="Password" CssClass="form-control" placeholder="Enter Password" />
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="ClientPassword"
+                    CssClass="text-danger" ErrorMessage="Password is required." />
+            </div>
+        </div>
 
         <!-- Client Tier -->
         <div class="form-group">
