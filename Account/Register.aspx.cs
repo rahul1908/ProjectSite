@@ -55,7 +55,8 @@ namespace ProjectSite.Account
                     var user = new IdentityUser
                     {
                         UserName = ClientEmail.Text,
-                        Email = ClientEmail.Text
+                        Email = ClientEmail.Text,
+                         LockoutEnabled = true
                     };
 
                     // Hash the password (replace "ClientPassword.Text" with the actual password input)
