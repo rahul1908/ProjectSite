@@ -8,7 +8,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container mt-5">
         <h2 class="text-center mb-4">Record Disbursement</h2>
-
+         <h4 class="text-center mb-3">Selected Project:</h4>
+        <asp:Label ID="LabelProjectName" runat="server" Text="" Font-Bold="True" Font-Size="Large"></asp:Label>
         <!-- Travel Section -->
         <div class="card mb-4">
             <div class="card-header">

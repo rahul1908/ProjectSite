@@ -51,6 +51,23 @@ namespace ProjectSite.Restricted
                                 }
                             }
                         }
+
+                        // Check if the session contains the project ID and project name
+                        if (Session["project_id"] != null && Session["selected_project_name"] != null)
+                        {
+                            // Retrieve the project name and display it
+                            string projectName = Session["selected_project_name"].ToString();
+                            LabelProjectName.Text = projectName;
+
+                            // If you need the project ID for further processing, you can also retrieve it
+                            string projectId = Session["project_id"].ToString();
+                            // You can use projectId as needed in your logic
+                        }
+                        else
+                        {
+                            // Redirect back to the ProjectSelect page if no project is selected
+                            Response.Redirect("~/Restricted/ProjectSelect.aspx");
+                        }
                     }
                     else
                     {
@@ -62,9 +79,8 @@ namespace ProjectSite.Restricted
                 {
                     // Redirect to login page if the user is not authenticated
                     Response.Redirect("~/Account/Login.aspx");
-
                 }
             }
-                }
         }
+    }
 }

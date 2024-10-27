@@ -108,7 +108,13 @@ namespace ProjectSite.Restricted
         {
             // Handle form submission here
             Session["project_id"] = ddlProjects.SelectedValue;
-            Label1.Text = Session["project_id"].ToString();
+
+            string selectedProjectName = ddlProjects.SelectedItem.Text;
+            Session["selected_project_name"] = selectedProjectName;
+
+            // Redirect to the RecordExpense page
+            Response.Redirect("~/Restricted/RecordExpense.aspx");
+            // Label1.Text = Session["project_id"].ToString();
         }
 
 

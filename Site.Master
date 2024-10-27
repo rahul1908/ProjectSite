@@ -69,9 +69,13 @@
         </asp:ScriptManager>
 
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
             <div class="container">
-                <a class="navbar-brand" runat="server" href="~/">Optimult</a>
+                <!-- Replace "Optimult" text with the logo image -->
+                <a class="navbar-brand" runat="server" href="~/">
+                    <img src="/Images/optimult_logo.png" alt="Optimult Logo" style="height: 40px; width: auto;" />
+                </a>
+                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -88,8 +92,8 @@
                             <a class="nav-link dropdown-toggle" id="employeeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Employee</a>
                             <ul class="dropdown-menu" aria-labelledby="employeeDropdown">
                                 <li><a class="dropdown-item" href="/Restricted/ViewClaims">View Claims</a></li>
-                                <li><a class="dropdown-item" href="/Restricted/RecordExpense">Record Expense</a></li>
-                                <li><a class="dropdown-item" href="/Restricted/RecordTravel">Record Travel</a></li>
+                               
+                                
                                 <li><a class="dropdown-item" href="/Restricted/ProjectSelect">Record Disbursement</a></li>
                             </ul>
                         </li>

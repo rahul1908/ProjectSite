@@ -220,6 +220,15 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Account\Web.config" />
+    <Content Include="Images\brayfoil_turbine.jpg" />
+    <Content Include="Images\capability1.jpg" />
+    <Content Include="Images\capability2.jpg" />
+    <Content Include="Images\capability3.jpg" />
+    <Content Include="Images\deloitte_solar.jpg" />
+    <Content Include="Images\global_footprint_map.jpg" />
+    <Content Include="Images\greenstone_energy.jpg" />
+    <Content Include="Images\optimult_logo.png" />
+    <Content Include="Images\rencat_plant.jpg" />
     <Content Include="Restricted\AddEmployee.aspx" />
     <Content Include="Restricted\AddProject.aspx" />
     <Content Include="Restricted\AssignProjects.aspx" />
