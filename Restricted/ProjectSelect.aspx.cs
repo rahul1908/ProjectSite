@@ -103,6 +103,12 @@ namespace ProjectSite.Restricted
         protected void ddlProjects_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Handle project selection changes here
+            Session["project_id"] = ddlProjects.SelectedValue;
+            Label2.Text = Session["project_id"].ToString()+" "+ Session["employee_id"].ToString();
+
+            string connection = SqlDataSource2.ID;
+            GridView1.DataSourceID = connection;
+            GridView1.DataBind();
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
