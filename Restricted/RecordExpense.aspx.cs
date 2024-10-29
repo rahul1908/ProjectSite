@@ -5,7 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
-
+using System.Configuration;
+using System.Data;
 namespace ProjectSite.Restricted
 {
     public partial class RecordExpense : System.Web.UI.Page
@@ -121,6 +122,30 @@ namespace ProjectSite.Restricted
                     Response.Redirect("~/Account/Login.aspx");
                 }
             }
+        }
+        private double GetClientRate(int assignmentID)
+        {
+            double clientrate;
+            string connectionstring = "Data Source=146.230.177.46;Initial Catalog=G8Wst2024;User ID=G8Wst2024;password=09ujd";
+            string query = @"SELECT clienttbl.Client_Rates 
+FROM Clienttbl INNER JOIN
+                         Projecttbl ON Clienttbl.Client_ID = Projecttbl.Client_ID INNER JOIN
+                         ProjectAssignmenttbl ON Projecttbl.Project_ID = ProjectAssignmenttbl.Project_ID
+WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
+
+            using (SqlConnection connection = new SqlConnection(connectionstring))
+            {
+                using (SqlCommand Cmd = new SqlCommand(query, connection))
+                {
+                    Cmd.Parameters.Add(new SqlParameter("@assignmentID", SqlDbType.Int));
+                    Cmd.Parameters["@assignmentID"].Value = assignmentID;
+                    connection.Open();
+                    object result = Cmd.ExecuteScalar();
+                    clientrate = Convert.ToDouble(result);
+                }
+            }
+
+            return clientrate;
         }
         protected void sqlDSInsertExpense_Selecting(object sender, SqlDataSourceSelectingEventArgs e)
         {
