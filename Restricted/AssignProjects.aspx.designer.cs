@@ -33,6 +33,15 @@ namespace ProjectSite.Restricted
         protected global::System.Web.UI.WebControls.DropDownList EmployeeID;
 
         /// <summary>
+        /// EmployeeDetailsGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView EmployeeDetailsGrid;
+
+        /// <summary>
         /// ProjectID control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,15 @@ namespace ProjectSite.Restricted
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ProjectID;
+
+        /// <summary>
+        /// ProjectDetailsGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView ProjectDetailsGrid;
 
         /// <summary>
         /// DateAssigned control.
@@ -58,14 +76,5 @@ namespace ProjectSite.Restricted
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox AssignmentClaimMax;
-
-        /// <summary>
-        /// AssignmentClaimBalance control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox AssignmentClaimBalance;
     }
 }

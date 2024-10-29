@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace ProjectSite.Restricted
 {
@@ -16,10 +17,11 @@ namespace ProjectSite.Restricted
             {
                 LoadEmployees();
                 LoadProjects();
+
                 // Check if user is logged in
                 if (User.Identity.IsAuthenticated)
                 {
-                    // Check if the user has the "Employee" role
+                    // Check if the user has the "Manager" role
                     if (User.IsInRole("Manager"))
                     {
                         // Get logged-in user's email
@@ -43,30 +45,27 @@ namespace ProjectSite.Restricted
                                 conn.Open();
 
                                 // Execute the query and get the result
-                                int id = (int)cmd.ExecuteScalar();
-                              
+                                object result = cmd.ExecuteScalar();
 
-                                // If the count is 0, the user does not exist in the Employee table
-                                if (id == null)
-                                    
+                                // If the result is null, the user does not exist in the Employee table
+                                if (result == null)
                                 {
                                     // Redirect to error page if the user is not in the Employee table
                                     Response.Redirect("~/ErrorPages/AccessDenied.aspx");
                                 }
                                 else
                                 {
-                                    Session["user_id"] = id;
-                                    //System.Diagnostics.Debug.WriteLine(Session["user_id"]);
-                                    //Label2.Text = Session["user_id"].ToString();
+                                    Session["user_id"] = (int)result;
+                                    LoadEmployees();
+                                    LoadProjects();
 
                                 }
-
                             }
                         }
                     }
                     else
                     {
-                        // If the user is logged in but does not have the "Employee" role, redirect to access denied page
+                        // If the user is logged in but does not have the "Manager" role, redirect to access denied page
                         Response.Redirect("~/ErrorPages/AccessDenied.aspx");
                     }
                 }
@@ -74,12 +73,9 @@ namespace ProjectSite.Restricted
                 {
                     // Redirect to login page if the user is not authenticated
                     Response.Redirect("~/Account/Login.aspx");
-
                 }
             }
-
-
-            }
+        }
 
         private void LoadEmployees()
         {
@@ -88,6 +84,7 @@ namespace ProjectSite.Restricted
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
+            
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     try
@@ -108,16 +105,19 @@ namespace ProjectSite.Restricted
             EmployeeID.Items.Insert(0, new ListItem("--Select Employee--", ""));
         }
 
-        // Load projects into dropdown
         private void LoadProjects()
         {
             string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
-            string query = "SELECT Project_ID, Project_Name FROM Projecttbl";  // Replace with your actual project table
+            string query = "SELECT Project_ID, Project_Name FROM Projecttbl Where Manager_ID = @managerid";  // Replace with your actual project table
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
+                
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                    int manid = (int)Session["user_id"];
+                    cmd.Parameters.AddWithValue("@ManagerID", manid);
+               
                     try
                     {
                         conn.Open();
@@ -136,28 +136,118 @@ namespace ProjectSite.Restricted
             ProjectID.Items.Insert(0, new ListItem("--Select Project--", ""));
         }
 
-        // Assign project to employee
-        protected void AssignProject_Click(object sender, EventArgs e)
+        protected void EmployeeID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Display selected employee's details
+            var selectedEmployeeId = EmployeeID.SelectedValue;
+            DisplayEmployeeDetails(selectedEmployeeId);
+        }
+
+        private void DisplayEmployeeDetails(string employeeId)
         {
             string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
-            string query = "INSERT INTO ProjectAssignmenttbl (Employee_ID, Project_ID, Date_Assigned, Assignment_Claim_Max, Assignment_Claim_Balance) " +
-                           "VALUES (@EmployeeID, @ProjectID, @DateAssigned, @AssignmentClaimMax, @AssignmentClaimBalance)";
+            string query = "SELECT Employee_Name, Employee_Surname, Employee_Job_Title, Province FROM Employeetbl WHERE Employee_ID = @EmployeeID";
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@EmployeeID", EmployeeID.SelectedValue);
-                    cmd.Parameters.AddWithValue("@ProjectID", ProjectID.SelectedValue);
-                    cmd.Parameters.AddWithValue("@DateAssigned", DateAssigned.Text);
-                    cmd.Parameters.AddWithValue("@AssignmentClaimMax", AssignmentClaimMax.Text);
-                    cmd.Parameters.AddWithValue("@AssignmentClaimBalance", AssignmentClaimBalance.Text);
+                    cmd.Parameters.AddWithValue("@EmployeeID", employeeId);
+                    try
+                    {
+                        conn.Open();
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        EmployeeDetailsGrid.DataSource = dt;
+                        EmployeeDetailsGrid.DataBind();
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorMessage.Text = "Error loading employee details: " + ex.Message;
+                    }
+                }
+            }
+        }
+
+        protected void ProjectID_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Display selected project's details
+            var selectedProjectId = ProjectID.SelectedValue;
+            DisplayProjectDetails(selectedProjectId);
+        }
+
+        private void DisplayProjectDetails(string projectId)
+        {
+            string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            string query = "SELECT Project_Name, Project_Start_date, Project_End_date, Project_Description, Project_Budget FROM Projecttbl WHERE Project_ID = @ProjectID";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ProjectID", projectId);
+                    try
+                    {
+                        conn.Open();
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        ProjectDetailsGrid.DataSource = dt;
+                        ProjectDetailsGrid.DataBind();
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorMessage.Text = "Error loading project details: " + ex.Message;
+                    }
+                }
+            }
+        }
+
+        protected void AssignProject_Click(object sender, EventArgs e)
+        {
+            string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            string checkQuery = "SELECT COUNT(*) FROM ProjectAssignmenttbl WHERE Employee_ID = @EmployeeID AND Project_ID = @ProjectID";
+            string insertQuery = "INSERT INTO ProjectAssignmenttbl (Employee_ID, Project_ID, Date_Assigned, Assignment_Claim_Max, Assignment_Claim_Balance) " +
+                                 "VALUES (@EmployeeID, @ProjectID, @DateAssigned, @AssignmentClaimMax, @AssignmentClaimBalance)";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
+                {
+                    checkCmd.Parameters.AddWithValue("@EmployeeID", EmployeeID.SelectedValue);
+                    checkCmd.Parameters.AddWithValue("@ProjectID", ProjectID.SelectedValue);
 
                     try
                     {
                         conn.Open();
-                        cmd.ExecuteNonQuery();
-                        Response.Write("<script>alert('Project assigned successfully');</script>");
+                        int exists = (int)checkCmd.ExecuteScalar();
+
+                        if (exists > 0)
+                        {
+                            ErrorMessage.Text = "This employee is already assigned to the selected project.";
+                        }
+                        else
+                        {
+                            using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
+                            {
+                                insertCmd.Parameters.AddWithValue("@EmployeeID", EmployeeID.SelectedValue);
+                                insertCmd.Parameters.AddWithValue("@ProjectID", ProjectID.SelectedValue);
+                                insertCmd.Parameters.AddWithValue("@DateAssigned", DateAssigned.Text);
+                                insertCmd.Parameters.AddWithValue("@AssignmentClaimMax", AssignmentClaimMax.Text);
+                                insertCmd.Parameters.AddWithValue("@AssignmentClaimBalance", 0);
+
+                                insertCmd.ExecuteNonQuery();
+                                Response.Write("<script>alert('Project assigned successfully');</script>");
+
+                                // Clear the fields after successful assignment
+                                EmployeeID.SelectedIndex = 0;
+                                ProjectID.SelectedIndex = 0;
+                                DateAssigned.Text = string.Empty;
+                                AssignmentClaimMax.Text = string.Empty;
+                               
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -166,5 +256,5 @@ namespace ProjectSite.Restricted
                 }
             }
         }
-        }
+    }
 }
