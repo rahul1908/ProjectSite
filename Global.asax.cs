@@ -28,6 +28,8 @@ namespace ProjectSite
             Session.Add("user_email", null);
             Session.Add("employee_id", null);
             Session.Add("project_id", 0);
+            Session.Add("assignment_id", 0);
+            Session.Add("manager_id", 0);
         }
     }
 }

@@ -102,13 +102,151 @@ namespace ProjectSite.Restricted
         }
         protected void ddlProjects_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Handle project selection changes here
+            string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            // Handle form submission here
             Session["project_id"] = ddlProjects.SelectedValue;
-            Label2.Text = Session["project_id"].ToString()+" "+ Session["employee_id"].ToString();
 
-            string connection = SqlDataSource2.ID;
-            GridView1.DataSourceID = connection;
-            GridView1.DataBind();
+            string selectedProjectName = ddlProjects.SelectedItem.Text;
+            Session["selected_project_name"] = selectedProjectName;
+            // Check if user is logged in
+            if (User.Identity.IsAuthenticated)
+            {
+                // Check if the user has the "Employee" role
+                if (User.IsInRole("Employee"))
+                {
+                    // Get the logged-in user's email
+                    string userEmail = User.Identity.Name;
+
+                    // Define your connection string
+
+
+                    // Define the SQL query to check if the user exists in the Employee table
+                    string Manager_query = "SELECT Employee_ID FROM Employeetbl WHERE Employee_Email = @Email";
+
+                    int employeeId = -1; // Initialize employeeId
+
+                    // Using SqlConnection and SqlCommand to execute the query
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        using (SqlCommand cmd = new SqlCommand(Manager_query, conn))
+                        {
+                            // Add the email parameter to the query
+                            cmd.Parameters.AddWithValue("@Email", userEmail);
+
+                            // Open the connection
+                            conn.Open();
+
+                            // Execute the query and get the result
+                            object result = cmd.ExecuteScalar();
+
+                            // Check if the result is null
+                            if (result != null)
+                            {
+                                // Store the Employee_ID in session variables
+                                employeeId = (int)result;
+                                Session["user_id"] = employeeId;
+                                Session["employee_id"] = employeeId;
+                            }
+                        }
+                    }
+
+                    // Now that you have the employee ID in session, you can proceed to use it in your assignment query
+                    // Assuming you have the project ID in the session already
+                    if (Session["project_id"] != null)
+                    {
+                        string projectId = Session["project_id"].ToString();
+
+                        // Your logic to use the employeeId and projectId for further processing
+                        // For example, retrieving the assignment ID:
+                        string assignmentQuery = @"
+                            SELECT ProjectAssignmenttbl.Assignment_ID 
+                            FROM ProjectAssignmenttbl 
+                            WHERE ProjectAssignmenttbl.Employee_ID = @EmployeeID 
+                            AND ProjectAssignmenttbl.Project_ID = @ProjectID";
+
+                        using (SqlConnection conn = new SqlConnection(connectionString)) // New connection for the assignment query
+                        {
+                            using (SqlCommand assignmentCmd = new SqlCommand(assignmentQuery, conn))
+                            {
+                                // Add parameters to the assignment query
+                                assignmentCmd.Parameters.AddWithValue("@EmployeeID", employeeId);
+                                assignmentCmd.Parameters.AddWithValue("@ProjectID", projectId);
+
+                                // Open the connection for the assignment query
+                                conn.Open();
+
+                                // Execute the assignment query and get the result
+                                object assignmentId = assignmentCmd.ExecuteScalar();
+
+                                // Check if the assignment ID is not null
+                                if (assignmentId != null)
+                                {
+                                    lblAssignID.Text = "Assignment ID is : " + assignmentId.ToString();
+                                    Session["assignment_id"] = assignmentId;
+                                }
+                                else
+                                {
+                                    lblAssignID.Text = "No assignment found for this project.";
+                                    Response.Redirect("~/Restricted/ProjectSelect.aspx");
+
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Handle case where no project ID is found in the session
+                        Response.Redirect("~/Restricted/ProjectSelect.aspx");
+                    }
+                }
+                else
+                {
+                    // Redirect to access denied page if not an Employee
+                    Response.Redirect("~/ErrorPages/AccessDenied.aspx");
+                }
+
+                // get manager id
+                string query = @"
+                            SELECT Manager_ID 
+                            FROM Projecttbl 
+                            WHERE Project_ID = @ID 
+                            ";
+                using (SqlConnection conn = new SqlConnection(connectionString)) // New connection for the assignment query
+                {
+                    using (SqlCommand managerCmd = new SqlCommand(query, conn))
+                    {
+                        // Add parameters to the assignment query
+                        managerCmd.Parameters.AddWithValue("@ID", ddlProjects.SelectedValue);
+
+                        // Open the connection for the assignment query
+                        conn.Open();
+
+                        // Execute the assignment query and get the result
+                        object managerID = managerCmd.ExecuteScalar();
+
+                        // Check if the assignment ID is not null
+                        if (managerID != null)
+                        {
+                            lblManagerID.Text = "Manager ID is : " + managerID.ToString();
+                            Session["manager_id"] = managerID;
+                        }
+                        else
+                        {
+                            lblManagerID.Text = "No assignment found for this project.";
+                            Response.Redirect("~/Restricted/ProjectSelect.aspx");
+
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Redirect to login page if the user is not authenticated
+                Response.Redirect("~/Account/Login.aspx");
+            }
+
+
+           
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -118,6 +256,10 @@ namespace ProjectSite.Restricted
 
             string selectedProjectName = ddlProjects.SelectedItem.Text;
             Session["selected_project_name"] = selectedProjectName;
+
+            sqlDSInsertDisbursement.Insert();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Insert was successful!');", true);
+
 
             // Redirect to the RecordExpense page
             Response.Redirect("~/Restricted/RecordExpense.aspx");
