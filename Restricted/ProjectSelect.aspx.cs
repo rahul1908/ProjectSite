@@ -54,6 +54,7 @@ namespace ProjectSite.Restricted
                                 else
                                 {
                                     Session["user_id"] = id;
+                                    Session["employee_id"] = id;
                                     //System.Diagnostics.Debug.WriteLine(Session["user_id"]);
                                     //Label2.Text = Session["user_id"].ToString();
 

@@ -26,6 +26,50 @@
                             </asp:SqlDataSource>
                             <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
                             <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="btn btn-primary btn-block" OnClick="btnSubmit_Click" />
+                            <asp:SqlDataSource ID="sqlDSInsertDisbursement" runat="server" ConflictDetection="CompareAllValues" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" DeleteCommand="DELETE FROM [DisbursementClaimtbl] WHERE [Disbursement_Claim_ID] = @original_Disbursement_Claim_ID AND (([Assignment_ID] = @original_Assignment_ID) OR ([Assignment_ID] IS NULL AND @original_Assignment_ID IS NULL)) AND (([Disbursement_Travel_Total] = @original_Disbursement_Travel_Total) OR ([Disbursement_Travel_Total] IS NULL AND @original_Disbursement_Travel_Total IS NULL)) AND (([Disbursement_Expense_Total] = @original_Disbursement_Expense_Total) OR ([Disbursement_Expense_Total] IS NULL AND @original_Disbursement_Expense_Total IS NULL)) AND (([Disbursement_Total_Claim] = @original_Disbursement_Total_Claim) OR ([Disbursement_Total_Claim] IS NULL AND @original_Disbursement_Total_Claim IS NULL)) AND [Disbursement_Date] = @original_Disbursement_Date AND (([Manager_ID] = @original_Manager_ID) OR ([Manager_ID] IS NULL AND @original_Manager_ID IS NULL)) AND (([Disbursement_Approved] = @original_Disbursement_Approved) OR ([Disbursement_Approved] IS NULL AND @original_Disbursement_Approved IS NULL))" InsertCommand="INSERT INTO DisbursementClaimtbl(Assignment_ID, Disbursement_Travel_Total, Disbursement_Expense_Total, Disbursement_Total_Claim, Disbursement_Date, Manager_ID, Disbursement_Approved) VALUES (@Assignment_ID, 0, 0, 0, GETDATE(), @Manager_ID, @Disbursement_Approved)" OldValuesParameterFormatString="original_{0}" SelectCommand="SELECT * FROM [DisbursementClaimtbl]" UpdateCommand="UPDATE [DisbursementClaimtbl] SET [Assignment_ID] = @Assignment_ID, [Disbursement_Travel_Total] = @Disbursement_Travel_Total, [Disbursement_Expense_Total] = @Disbursement_Expense_Total, [Disbursement_Total_Claim] = @Disbursement_Total_Claim, [Disbursement_Date] = @Disbursement_Date, [Manager_ID] = @Manager_ID, [Disbursement_Approved] = @Disbursement_Approved WHERE [Disbursement_Claim_ID] = @original_Disbursement_Claim_ID AND (([Assignment_ID] = @original_Assignment_ID) OR ([Assignment_ID] IS NULL AND @original_Assignment_ID IS NULL)) AND (([Disbursement_Travel_Total] = @original_Disbursement_Travel_Total) OR ([Disbursement_Travel_Total] IS NULL AND @original_Disbursement_Travel_Total IS NULL)) AND (([Disbursement_Expense_Total] = @original_Disbursement_Expense_Total) OR ([Disbursement_Expense_Total] IS NULL AND @original_Disbursement_Expense_Total IS NULL)) AND (([Disbursement_Total_Claim] = @original_Disbursement_Total_Claim) OR ([Disbursement_Total_Claim] IS NULL AND @original_Disbursement_Total_Claim IS NULL)) AND [Disbursement_Date] = @original_Disbursement_Date AND (([Manager_ID] = @original_Manager_ID) OR ([Manager_ID] IS NULL AND @original_Manager_ID IS NULL)) AND (([Disbursement_Approved] = @original_Disbursement_Approved) OR ([Disbursement_Approved] IS NULL AND @original_Disbursement_Approved IS NULL))">
+                                <DeleteParameters>
+                                    <asp:Parameter Name="original_Disbursement_Claim_ID" Type="Int32" />
+                                    <asp:Parameter Name="original_Assignment_ID" Type="Int32" />
+                                    <asp:Parameter Name="original_Disbursement_Travel_Total" Type="Decimal" />
+                                    <asp:Parameter Name="original_Disbursement_Expense_Total" Type="Decimal" />
+                                    <asp:Parameter Name="original_Disbursement_Total_Claim" Type="Decimal" />
+                                    <asp:Parameter Name="original_Disbursement_Date" Type="DateTime" />
+                                    <asp:Parameter Name="original_Manager_ID" Type="Int32" />
+                                    <asp:Parameter Name="original_Disbursement_Approved" Type="String" />
+                                </DeleteParameters>
+                                <InsertParameters>
+                                    <asp:Parameter Name="Assignment_ID" Type="Int32" />
+                                    <asp:Parameter DefaultValue="0" Name="Disbursement_Travel_Total" Type="Decimal" />
+                                    <asp:Parameter DefaultValue="0" Name="Disbursement_Expense_Total" Type="Decimal" />
+                                    <asp:Parameter DefaultValue="0" Name="Disbursement_Total_Claim" Type="Decimal" />
+                                    <asp:QueryStringParameter DefaultValue="" Name="Disbursement_Date" Type="DateTime" />
+                                    <asp:Parameter Name="Manager_ID" Type="Int32" />
+                                    <asp:Parameter Name="Disbursement_Approved" Type="String" />
+                                </InsertParameters>
+                                <UpdateParameters>
+                                    <asp:Parameter Name="Assignment_ID" Type="Int32" />
+                                    <asp:Parameter Name="Disbursement_Travel_Total" Type="Decimal" />
+                                    <asp:Parameter Name="Disbursement_Expense_Total" Type="Decimal" />
+                                    <asp:Parameter Name="Disbursement_Total_Claim" Type="Decimal" />
+                                    <asp:Parameter Name="Disbursement_Date" Type="DateTime" />
+                                    <asp:Parameter Name="Manager_ID" Type="Int32" />
+                                    <asp:Parameter Name="Disbursement_Approved" Type="String" />
+                                    <asp:Parameter Name="original_Disbursement_Claim_ID" Type="Int32" />
+                                    <asp:Parameter Name="original_Assignment_ID" Type="Int32" />
+                                    <asp:Parameter Name="original_Disbursement_Travel_Total" Type="Decimal" />
+                                    <asp:Parameter Name="original_Disbursement_Expense_Total" Type="Decimal" />
+                                    <asp:Parameter Name="original_Disbursement_Total_Claim" Type="Decimal" />
+                                    <asp:Parameter Name="original_Disbursement_Date" Type="DateTime" />
+                                    <asp:Parameter Name="original_Manager_ID" Type="Int32" />
+                                    <asp:Parameter Name="original_Disbursement_Approved" Type="String" />
+                                </UpdateParameters>
+                            </asp:SqlDataSource>
+                            <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" SelectCommand="SELECT ProjectAssignmenttbl.Assignment_ID, ProjectAssignmenttbl.Project_ID, ProjectAssignmenttbl.Employee_ID, ProjectAssignmenttbl.Date_Assigned, ProjectAssignmenttbl.Assignment_Claim_Max, ProjectAssignmenttbl.Assignment_Claim_Balance, Projecttbl.Project_Name FROM ProjectAssignmenttbl INNER JOIN Projecttbl ON ProjectAssignmenttbl.Project_ID = Projecttbl.Project_ID WHERE (ProjectAssignmenttbl.Employee_ID = @employeeID) AND (ProjectAssignmenttbl.Project_ID = @ID)">
+                                <SelectParameters>
+                                    <asp:SessionParameter Name="employeeID" SessionField="employee_id" />
+                                    <asp:Parameter DefaultValue="project_id" Name="ID" />
+                                </SelectParameters>
+                            </asp:SqlDataSource>
                         </div>
                     </div>
                 </div>

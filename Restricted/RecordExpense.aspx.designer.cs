@@ -24,6 +24,33 @@ namespace ProjectSite.Restricted
         protected global::System.Web.UI.WebControls.Label LabelProjectName;
 
         /// <summary>
+        /// Label1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label1;
+
+        /// <summary>
+        /// chbTravel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chbTravel;
+
+        /// <summary>
+        /// chbExpense control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chbExpense;
+
+        /// <summary>
         /// txtTravelDate control.
         /// </summary>
         /// <remarks>
@@ -94,6 +121,24 @@ namespace ProjectSite.Restricted
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlExpenseType;
+
+        /// <summary>
+        /// sqlDSInsertTravel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlDSInsertTravel;
+
+        /// <summary>
+        /// sqlDSInsertExpense control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlDSInsertExpense;
 
         /// <summary>
         /// btnSubmit control.

@@ -200,6 +200,10 @@
     <Content Include="Account\ResetPasswordConfirmation.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
+    <Content Include="App_Data\aspnet-ProjectSite-20241012112202.mdf" />
+    <Content Include="App_Data\aspnet-ProjectSite-20241012112202_log.ldf">
+      <DependentUpon>aspnet-ProjectSite-20241012112202.mdf</DependentUpon>
+    </Content>
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -498,7 +502,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
