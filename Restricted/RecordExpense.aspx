@@ -11,6 +11,7 @@
          <h4 class="text-center mb-3">Selected Project:</h4>
         <asp:Label ID="LabelProjectName" runat="server" Text="" Font-Bold="True" Font-Size="Large"></asp:Label>
         </br>
+        <asp:Label ID="lblassignID" runat="server" Text="Label"></asp:Label>
         </br>
         <asp:Label ID="Label1" runat="server" Text="What do you want to record?"></asp:Label>
         </br>
@@ -134,8 +135,8 @@
                     <asp:Parameter Name="original_Travel_Proof" Type="Boolean" />
                 </UpdateParameters>
             </asp:SqlDataSource>
-            <asp:SqlDataSource ID="sqlDSInsertExpense" runat="server"></asp:SqlDataSource>
-            <asp:Button ID="btnSubmit" runat="server" CssClass="btn btn-primary" Text="Submit" />
+            <asp:SqlDataSource ID="sqlDSInsertExpense" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" OnSelecting="sqlDSInsertExpense_Selecting" SelectCommand="SELECT * FROM [Clienttbl]"></asp:SqlDataSource>
+            <asp:Button ID="btnSubmit" runat="server" CssClass="btn btn-primary" Text="Submit" OnClick="btnSubmit_Click" />
         </div>
     </div>
 </asp:Content>

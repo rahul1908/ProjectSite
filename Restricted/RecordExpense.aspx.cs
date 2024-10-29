@@ -20,14 +20,16 @@ namespace ProjectSite.Restricted
                     // Check if the user has the "Employee" role
                     if (User.IsInRole("Employee"))
                     {
-                        // Get logged-in user's email
+                        // Get the logged-in user's email
                         string userEmail = User.Identity.Name;
 
                         // Define your connection string
                         string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
 
                         // Define the SQL query to check if the user exists in the Employee table
-                        string query = "SELECT COUNT(*) FROM Employeetbl WHERE Employee_Email = @Email";
+                        string query = "SELECT Employee_ID FROM Employeetbl WHERE Employee_Email = @Email";
+
+                        int employeeId = -1; // Initialize employeeId
 
                         // Using SqlConnection and SqlCommand to execute the query
                         using (SqlConnection conn = new SqlConnection(connectionString))
@@ -41,37 +43,75 @@ namespace ProjectSite.Restricted
                                 conn.Open();
 
                                 // Execute the query and get the result
-                                int count = (int)cmd.ExecuteScalar();
+                                object result = cmd.ExecuteScalar();
 
-                                // If the count is 0, the user does not exist in the Employee table
-                                if (count == 0)
+                                // Check if the result is null
+                                if (result == null)
                                 {
                                     // Redirect to error page if the user is not in the Employee table
                                     Response.Redirect("~/ErrorPages/AccessDenied.aspx");
                                 }
+                                else
+                                {
+                                    // Store the Employee_ID in session variables
+                                    employeeId = (int)result;
+                                    Session["user_id"] = employeeId;
+                                    Session["employee_id"] = employeeId;
+                                }
                             }
                         }
 
-                        // Check if the session contains the project ID and project name
-                        if (Session["project_id"] != null && Session["selected_project_name"] != null)
+                        // Now that you have the employee ID in session, you can proceed to use it in your assignment query
+                        // Assuming you have the project ID in the session already
+                        if (Session["project_id"] != null)
                         {
-                            // Retrieve the project name and display it
-                            string projectName = Session["selected_project_name"].ToString();
-                            LabelProjectName.Text = projectName;
-
-                            // If you need the project ID for further processing, you can also retrieve it
                             string projectId = Session["project_id"].ToString();
-                            // You can use projectId as needed in your logic
+
+                            // Your logic to use the employeeId and projectId for further processing
+                            // For example, retrieving the assignment ID:
+                            string assignmentQuery = @"
+                            SELECT ProjectAssignmenttbl.Assignment_ID 
+                            FROM ProjectAssignmenttbl 
+                            WHERE ProjectAssignmenttbl.Employee_ID = @EmployeeID 
+                            AND ProjectAssignmenttbl.Project_ID = @ProjectID";
+
+                            using (SqlConnection conn = new SqlConnection(connectionString)) // New connection for the assignment query
+                            {
+                                using (SqlCommand assignmentCmd = new SqlCommand(assignmentQuery, conn))
+                                {
+                                    // Add parameters to the assignment query
+                                    assignmentCmd.Parameters.AddWithValue("@EmployeeID", employeeId);
+                                    assignmentCmd.Parameters.AddWithValue("@ProjectID", projectId);
+
+                                    // Open the connection for the assignment query
+                                    conn.Open();
+
+                                    // Execute the assignment query and get the result
+                                    object assignmentId = assignmentCmd.ExecuteScalar();
+
+                                    // Check if the assignment ID is not null
+                                    if (assignmentId != null)
+                                    {
+                                        lblassignID.Text = assignmentId.ToString();
+                                    }
+                                    else
+                                    {
+                                        lblassignID.Text = "No assignment found for this project.";
+                                        Response.Redirect("~/Restricted/ProjectSelect.aspx");
+
+                                    }
+                                }
+                            }
                         }
                         else
                         {
-                            // Redirect back to the ProjectSelect page if no project is selected
+                            // Handle case where no project ID is found in the session
                             Response.Redirect("~/Restricted/ProjectSelect.aspx");
                         }
                     }
                     else
                     {
-                        // If the user is logged in but does not have the "Employee" role, redirect to access denied page
+                        // Redirect to access denied page if not an Employee
                         Response.Redirect("~/ErrorPages/AccessDenied.aspx");
                     }
                 }
@@ -82,5 +122,16 @@ namespace ProjectSite.Restricted
                 }
             }
         }
+        protected void sqlDSInsertExpense_Selecting(object sender, SqlDataSourceSelectingEventArgs e)
+        {
+
+           
+        }
+
+        protected void btnSubmit_Click(object sender, EventArgs e)
+        {
+
+        }
     }
+   
 }
