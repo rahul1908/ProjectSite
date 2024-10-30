@@ -257,9 +257,8 @@ namespace ProjectSite.Restricted
             string selectedProjectName = ddlProjects.SelectedItem.Text;
             Session["selected_project_name"] = selectedProjectName;
 
-            setDisbursementClaimID();
-
             sqlDSInsertDisbursement.Insert();
+            setDisbursementClaimID();
             ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Insert was successful!');", true);
 
 
