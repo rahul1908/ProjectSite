@@ -171,6 +171,10 @@
             </asp:SqlDataSource>
             <asp:SqlDataSource ID="sqlDSFillExpenseType" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" SelectCommand="SELECT * FROM [ExpenseTypetbl]"></asp:SqlDataSource>
             <asp:Button ID="btnSubmit" runat="server" CssClass="btn btn-primary" Text="Submit" OnClick="btnSubmit_Click" />
+            </br></br>
+            <asp:Button ID="btnNewRecord" runat="server" CssClass="btn btn-primary" Text="Do you want to make a new record?" OnClick="btnNewRecord_Click" Visible="False" />
+            </br></br>
+            <asp:Button ID="btnNewDisbursement" runat="server" CssClass="btn btn-primary" Text="Do you want to record a new Disbursement?" OnClick="btnNewDisbursement_Click" Visible="False" />
         </div>
     </div>
 </asp:Content>

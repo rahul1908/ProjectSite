@@ -231,6 +231,9 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
                 // Register the JavaScript to show the alert
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('{message}');", true);
             }
+
+            btnNewRecord.Visible = true;
+            btnNewDisbursement.Visible = true;
         }
 
 
@@ -266,6 +269,26 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             double totalTravel = client_rate * mileage;
 
             txtTravelTotal.Text = totalTravel.ToString();
+        }
+
+        protected void btnNewRecord_Click(object sender, EventArgs e)
+        {
+            txtTravelDate.Text = "";
+            txtTravelDescription.Text = "";
+            txtVehicleDescription.Text = "";
+            txtMileage.Text = "";
+            txtTravelTotal.Text = "";
+
+            txtExpenseAmount.Text = "";
+            txtExpenseDate.Text = "";
+            //ddlExpenseType.Text = "";
+
+            btnNewRecord.Visible = false;
+        }
+
+        protected void btnNewDisbursement_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Restricted/ProjectSelect.aspx");
         }
     }
    
