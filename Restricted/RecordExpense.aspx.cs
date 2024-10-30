@@ -234,6 +234,9 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
             btnNewRecord.Visible = true;
             btnNewDisbursement.Visible = true;
+
+            sqlDSUpdateDisbursementValues.Update();
+            sqlDSUpdateAssignmentValues.Update();
         }
 
 
