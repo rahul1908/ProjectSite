@@ -30,6 +30,7 @@ namespace ProjectSite
             Session.Add("project_id", 0);
             Session.Add("assignment_id", 0);
             Session.Add("manager_id", 0);
+            Session.Add("MaxDisbursementClaimID", null);
         }
     }
 }

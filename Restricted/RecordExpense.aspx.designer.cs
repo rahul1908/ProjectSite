@@ -150,6 +150,15 @@ namespace ProjectSite.Restricted
         protected global::System.Web.UI.WebControls.SqlDataSource sqlDSInsertExpense;
 
         /// <summary>
+        /// sqlDSFillExpenseType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlDSFillExpenseType;
+
+        /// <summary>
         /// btnSubmit control.
         /// </summary>
         /// <remarks>

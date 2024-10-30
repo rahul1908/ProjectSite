@@ -122,7 +122,48 @@ namespace ProjectSite.Restricted
                     Response.Redirect("~/Account/Login.aspx");
                 }
             }
+
+            // disabling fields on form load
+            if (chbTravel.Checked == false)
+            {
+                disableTravel();
+            }
+            if (chbExpense.Checked == false)
+            {
+                disableExpense();
+            }
         }
+
+        private void disableTravel()
+        {
+            txtTravelDate.Enabled = false;
+            txtTravelDescription.Enabled = false;
+            txtVehicleDescription.Enabled = false;
+            txtMileage.Enabled = false;
+        }
+
+        private void disableExpense()
+        {
+            txtExpenseAmount.Enabled = false;
+            txtExpenseDate.Enabled = false;
+            ddlExpenseType.Enabled = false;
+        }
+
+        private void enableTravel()
+        {
+            txtTravelDate.Enabled = true;
+            txtTravelDescription.Enabled = true;
+            txtVehicleDescription.Enabled = true;
+            txtMileage.Enabled = true;
+        }
+
+        private void enableExpense()
+        {
+            txtExpenseAmount.Enabled = true;
+            txtExpenseDate.Enabled = true;
+            ddlExpenseType.Enabled = true;
+        }
+
         private double GetClientRate(int assignmentID)
         {
             double clientrate;
@@ -155,7 +196,76 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            bool travelInserted = false;
+            bool expenseInserted = false;
 
+            if (chbTravel.Checked)
+            {
+                sqlDSInsertTravel.Insert();
+                travelInserted = true;
+            }
+
+            if (chbExpense.Checked)
+            {
+                sqlDSInsertExpense.Insert();
+                expenseInserted = true;
+            }
+
+            if (travelInserted || expenseInserted)
+            {
+                // Prepare the message for the alert based on what was inserted
+                string message = "Insert successful!";
+                if (travelInserted && expenseInserted)
+                {
+                    message = "Travel and Expense records inserted successfully!";
+                }
+                else if (travelInserted)
+                {
+                    message = "Travel record inserted successfully!";
+                }
+                else if (expenseInserted)
+                {
+                    message = "Expense record inserted successfully!";
+                }
+
+                // Register the JavaScript to show the alert
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('{message}');", true);
+            }
+        }
+
+
+        protected void chbTravel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chbTravel.Checked)
+            {
+                enableTravel();
+            }
+            else
+            {
+                disableTravel();
+            }
+        }
+
+        protected void chbExpense_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chbExpense.Checked)
+            {
+                enableExpense();
+            }
+            else
+            {
+                disableExpense();
+            }
+        }
+
+        protected void txtMileage_TextChanged(object sender, EventArgs e)
+        {
+            int assignment_id = (int)Session["assignment_id"];
+            double client_rate = GetClientRate(assignment_id);
+            double mileage = double.Parse(txtMileage.Text);
+            double totalTravel = client_rate * mileage;
+
+            txtTravelTotal.Text = totalTravel.ToString();
         }
     }
    

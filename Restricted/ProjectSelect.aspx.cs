@@ -257,6 +257,8 @@ namespace ProjectSite.Restricted
             string selectedProjectName = ddlProjects.SelectedItem.Text;
             Session["selected_project_name"] = selectedProjectName;
 
+            setDisbursementClaimID();
+
             sqlDSInsertDisbursement.Insert();
             ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Insert was successful!');", true);
 
@@ -266,6 +268,31 @@ namespace ProjectSite.Restricted
             // Label1.Text = Session["project_id"].ToString();
         }
 
+        private void setDisbursementClaimID()
+        {
+            string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            string query = "SELECT        MAX(Disbursement_Claim_ID) AS Expr1 FROM DisbursementClaimtbl";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(query, conn);
+                conn.Open();
+
+                // Execute the query and get the result
+                object result = cmd.ExecuteScalar();
+
+                if (result != DBNull.Value) // Check if there is a result
+                {
+                    // Store the result in a session variable
+                    Session["MaxDisbursementClaimID"] = (int)result; // Cast to int if the field is int
+                }
+                else
+                {
+                    // Handle case where there is no result (e.g., table is empty)
+                    Session["MaxDisbursementClaimID"] = null;
+                }
+            }
+        } 
 
     }
 }
