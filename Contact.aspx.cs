@@ -4,8 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using System.Net.Mail;
+using System.Threading.Tasks;
+using System.Net;
 
 namespace ProjectSite
 {
@@ -15,11 +18,10 @@ namespace ProjectSite
         {
         }
 
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        protected async void btnSubmit_Click(object sender, EventArgs e)
         {
             // Fetch the values from input fields
             string name = txtName.Text;
-
             string email = txtEmail.Text;
             string message = txtMessage.Text;
 
@@ -32,33 +34,70 @@ namespace ProjectSite
 
             try
             {
-                // Set up the mail message
-                MailMessage mail = new MailMessage();
-                mail.To.Add("info@optimult.com");
-                mail.From = new MailAddress(email);
-                mail.Subject = "Contact Form Submission from " + name;
-                mail.Body = message;
+                // Send the email using Mailtrap's SMTP
+                var result = await SendEmailAsync(name, email, message);
 
-                // Configure the SMTP client
-                SmtpClient smtp = new SmtpClient
+                if (result)
                 {
-                    Host = "smtp.yourserver.com", // Set your SMTP server
-                    Port = 587,
-                    Credentials = new System.Net.NetworkCredential("username", "password"), // Set your email credentials
-                    EnableSsl = true
-                };
-
-                // Send the email
-                smtp.Send(mail);
-
-                // Show success alert
-                ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Message sent successfully.');", true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Message sent successfully.');", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Failed to send message.');", true);
+                }
             }
             catch (Exception ex)
             {
-                // Display error alert
+                Console.WriteLine($"Error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+
                 ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage", "alert('Failed to send message: " + System.Web.HttpUtility.JavaScriptStringEncode(ex.Message) + "');", true);
+            }
+        }
+
+        private async Task<bool> SendEmailAsync(string name, string fromEmail, string message)
+        {
+            // Mailtrap SMTP configuration
+            string smtpServer = "smtp.mailtrap.io"; // Mailtrap SMTP server
+            int smtpPort = 587; // SMTP port
+            string smtpUser = "b0ee5500645691"; // Replace with your Mailtrap username
+            string smtpPass = "04854fca159a81"; // Replace with your Mailtrap password
+
+            try
+            {
+                using (var smtpClient = new SmtpClient(smtpServer, smtpPort))
+                {
+                    smtpClient.Credentials = new NetworkCredential(smtpUser, smtpPass);
+                    smtpClient.EnableSsl = true;
+
+                    var mailMessage = new MailMessage
+                    {
+                        From = new MailAddress(fromEmail, name),
+                        Subject = $"Contact Form Submission from {name}",
+                        Body = message,
+                        IsBodyHtml = true
+                    };
+
+                    mailMessage.To.Add(new MailAddress("optimultinfo@gmail.com", "Optimult Info"));
+
+                    await smtpClient.SendMailAsync(mailMessage);
+                }
+
+                return true; // Return true if the email was sent successfully
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"SMTP Error: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+                return false; // Return false if sending fails
             }
         }
     }
 }
+
