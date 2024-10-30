@@ -31,6 +31,7 @@ namespace ProjectSite
             Session.Add("assignment_id", 0);
             Session.Add("manager_id", 0);
             Session.Add("MaxDisbursementClaimID", null);
+            Session.Add("assignment_balance", 0);
         }
     }
 }

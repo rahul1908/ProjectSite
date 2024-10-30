@@ -72,7 +72,11 @@
                                     <asp:SessionParameter DefaultValue="" Name="ID" SessionField="&quot;project_id&quot;" />
                                 </SelectParameters>
                             </asp:SqlDataSource>
-                            <asp:SqlDataSource ID="SqlDataSource3" runat="server"></asp:SqlDataSource>
+                            <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" SelectCommand="SELECT Disbursement_Total_Claim - (Disbursement_Travel_Total + Disbursement_Expense_Total) AS NetClaim FROM DisbursementClaimtbl WHERE (Assignment_ID = @id) AND (Disbursement_Claim_ID = (SELECT MAX(Disbursement_Claim_ID) AS Expr1 FROM DisbursementClaimtbl AS DisbursementClaimtbl_1 WHERE (Assignment_ID = @id)))">
+                                <SelectParameters>
+                                    <asp:Parameter Name="id" />
+                                </SelectParameters>
+                            </asp:SqlDataSource>
                         </div>
                     </div>
                 </div>

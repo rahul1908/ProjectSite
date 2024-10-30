@@ -245,8 +245,53 @@ namespace ProjectSite.Restricted
                 Response.Redirect("~/Account/Login.aspx");
             }
 
+            assignmentBalance();
 
-           
+
+        }
+
+        private void assignmentBalance()
+        {
+            string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            // get manager id
+            string query = @"
+                            SELECT 
+    Disbursement_Total_Claim - (Disbursement_Travel_Total + Disbursement_Expense_Total) AS NetClaim
+FROM 
+    DisbursementClaimtbl
+WHERE 
+    Assignment_ID = @id 
+    AND Disbursement_Claim_ID = (SELECT MAX(Disbursement_Claim_ID) 
+                                 FROM DisbursementClaimtbl 
+                                 WHERE Assignment_ID = @id)
+
+                            ";
+            using (SqlConnection conn = new SqlConnection(connectionString)) // New connection for the assignment query
+            {
+                using (SqlCommand assignmentBalanceCmd = new SqlCommand(query, conn))
+                {
+                    // Add parameters to the assignment query
+                    assignmentBalanceCmd.Parameters.AddWithValue("@id", Session["assignment_id"]);
+
+                    // Open the connection for the assignment query
+                    conn.Open();
+
+                    // Execute the assignment query and get the result
+                    object assignmentBalance = assignmentBalanceCmd.ExecuteScalar();
+
+                    // Check if the assignment ID is not null
+                    if (assignmentBalance != null)
+                    {
+                        Label3.Text = "Amount Available for this project : " + assignmentBalance.ToString();
+                        Session["assignment_balance"] = assignmentBalance;
+                    }
+                    else
+                    {
+                        Response.Redirect("~/Restricted/ProjectSelect.aspx");
+
+                    }
+                }
+            }
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
