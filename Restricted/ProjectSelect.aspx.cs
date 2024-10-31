@@ -287,21 +287,26 @@ namespace ProjectSite.Restricted
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            // Handle form submission here
-            Session["project_id"] = ddlProjects.SelectedValue;
+            if ((decimal)Session["assignment_balance"] > 0)
+            {
+                // Handle form submission here
+                Session["project_id"] = ddlProjects.SelectedValue;
 
-            string selectedProjectName = ddlProjects.SelectedItem.Text;
-            Session["selected_project_name"] = selectedProjectName;
+                string selectedProjectName = ddlProjects.SelectedItem.Text;
+                Session["selected_project_name"] = selectedProjectName;
 
-            sqlDSInsertDisbursement.Insert();
-            setDisbursementClaimID();
-            ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Insert was successful!');", true);
-
-
-            // Redirect to the RecordExpense page
-            Response.Redirect("~/Restricted/RecordExpense.aspx");
-            // Label1.Text = Session["project_id"].ToString();
+                sqlDSInsertDisbursement.Insert();
+                setDisbursementClaimID();
+                String message = "New disbursement created! Your Disbursement ID is: " + Session["MaxDisbursementClaimID"].ToString();
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('{message}'); window.location='/Restricted/RecordExpense.aspx';", true);
+            }
+            else
+            {
+                String message = "This project has reached its Max Claim! Select another project";
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('{message}'); window.location='/Restricted/ProjectSelect.aspx';", true);
+            }
         }
+
 
         private void setDisbursementClaimID()
         {
