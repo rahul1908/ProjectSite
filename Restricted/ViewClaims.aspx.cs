@@ -84,7 +84,7 @@ namespace ProjectSite
             int? assignmentId = GetAssignmentID(employeeId);
 
             // SQL query to retrieve claims for the logged-in employee using the retrieved Assignment ID
-            string query = @"SELECT DISTINCT
+            string query = @"SELECT 
     dc.Disbursement_Claim_ID,
     pa.Assignment_ID,
     dc.Disbursement_Travel_Total,
@@ -107,7 +107,7 @@ WHERE
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@assignmentId", assignmentId);
+                    command.Parameters.AddWithValue("@assignmentId", employeeId);
 
                     try
                     {

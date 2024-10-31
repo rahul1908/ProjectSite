@@ -234,8 +234,8 @@ namespace ProjectSite.Restricted
                                 insertCmd.Parameters.AddWithValue("@EmployeeID", EmployeeID.SelectedValue);
                                 insertCmd.Parameters.AddWithValue("@ProjectID", ProjectID.SelectedValue);
                                 insertCmd.Parameters.AddWithValue("@DateAssigned", DateAssigned.Text);
-                                insertCmd.Parameters.AddWithValue("@AssignmentClaimMax", AssignmentClaimMax.Text);
-                                insertCmd.Parameters.AddWithValue("@AssignmentClaimBalance", 0);
+                                insertCmd.Parameters.AddWithValue("@AssignmentClaimMax",AssignmentClaimMax.Text);
+                                insertCmd.Parameters.AddWithValue("@AssignmentClaimBalance", AssignmentClaimMax.Text);
 
                                 insertCmd.ExecuteNonQuery();
                                 Response.Write("<script>alert('Project assigned successfully');</script>");
