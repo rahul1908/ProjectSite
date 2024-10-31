@@ -45,11 +45,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>packages\BouncyCastle.Cryptography.2.4.0\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -244,6 +250,9 @@
     <Content Include="Images\rencat_plant.jpg" />
     <Content Include="Restricted\AddEmployee.aspx" />
     <Content Include="Restricted\AddProject.aspx" />
+    <Content Include="Restricted\Admin_Employee.aspx" />
+    <Content Include="Restricted\Admin_ExpenseyType.aspx" />
+    <Content Include="Restricted\Admin_Project.aspx" />
     <Content Include="Restricted\AssignProjects.aspx" />
     <Content Include="Restricted\ProjectSelect.aspx" />
     <Content Include="Restricted\RecordExpense.aspx" />
@@ -444,6 +453,27 @@
     </Compile>
     <Compile Include="Restricted\AddProject.aspx.designer.cs">
       <DependentUpon>AddProject.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Restricted\Admin_Employee.aspx.cs">
+      <DependentUpon>Admin_Employee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Restricted\Admin_Employee.aspx.designer.cs">
+      <DependentUpon>Admin_Employee.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Restricted\Admin_ExpenseyType.aspx.cs">
+      <DependentUpon>Admin_ExpenseyType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Restricted\Admin_ExpenseyType.aspx.designer.cs">
+      <DependentUpon>Admin_ExpenseyType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Restricted\Admin_Project.aspx.cs">
+      <DependentUpon>Admin_Project.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Restricted\Admin_Project.aspx.designer.cs">
+      <DependentUpon>Admin_Project.aspx</DependentUpon>
     </Compile>
     <Compile Include="Restricted\AssignProjects.aspx.cs">
       <DependentUpon>AssignProjects.aspx</DependentUpon>

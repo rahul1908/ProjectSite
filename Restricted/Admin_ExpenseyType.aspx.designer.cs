@@ -7,65 +7,47 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProjectSite
+namespace ProjectSite.Restricted
 {
 
 
-    public partial class ViewClaims
+    public partial class Admin_ExpenseyType
     {
 
         /// <summary>
-        /// ClaimsGridView control.
+        /// GridViewExpenseType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView ClaimsGridView;
+        protected global::System.Web.UI.WebControls.GridView GridViewExpenseType;
 
         /// <summary>
-        /// ExpensePanel control.
+        /// txtExpenseName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel ExpensePanel;
+        protected global::System.Web.UI.WebControls.TextBox txtExpenseName;
 
         /// <summary>
-        /// ExpenseGridView control.
+        /// btnAddExpenseType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView ExpenseGridView;
+        protected global::System.Web.UI.WebControls.Button btnAddExpenseType;
 
         /// <summary>
-        /// TravelPanel control.
+        /// lblMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel TravelPanel;
-
-        /// <summary>
-        /// TravelGridView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView TravelGridView;
-
-        /// <summary>
-        /// btnGeneratePDF control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGeneratePDF;
+        protected global::System.Web.UI.WebControls.Label lblMessage;
     }
 }

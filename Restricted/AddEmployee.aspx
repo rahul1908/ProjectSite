@@ -16,6 +16,13 @@
         <form class="needs-validation" novalidate>
             <div class="row">
                 <div class="col-md-6">
+
+                      <div class="form-group">
+                        <label for="EmployeeID">First Name</label>
+                        <asp:TextBox ID="EmployeeRSAID" CssClass="form-control" runat="server" Placeholder="Enter ID Number" required></asp:TextBox>
+                        <div class="invalid-feedback">Please enter the ID Number.</div>
+                    </div>
+                </div>
                     <!-- First Name -->
                     <div class="form-group">
                         <label for="EmployeeName">First Name</label>

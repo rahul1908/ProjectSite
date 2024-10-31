@@ -152,6 +152,20 @@
             <hr />
         </div>
 
+        <!-- Admin Dropdown Menu at the Bottom -->
+        <div class="admin-dropdown">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Admin Options
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                    <li><a class="dropdown-item" href="/Restricted/Admin_ExpenseyType">Manage Expense Types</a></li>
+                    <li><a class="dropdown-item" href="/Restricted/Admin_Employee">Manage Employee Info</a></li>
+                    <li><a class="dropdown-item" href="/Restricted/Admin_Project">Manage Project Info</a></li>
+                </ul>
+            </div>
+        </div>
+
         <!-- Sticky Footer -->
         <footer>
             <p>&copy; <%: DateTime.Now.Year %> - Optimult</p>

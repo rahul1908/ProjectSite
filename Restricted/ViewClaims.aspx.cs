@@ -7,6 +7,10 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
 using System.Configuration;
+using System.IO;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+
 
 namespace ProjectSite
 {
@@ -276,6 +280,187 @@ WHERE
                     }
                 }
             }
+        }
+
+
+        protected void btnGeneratePDF_Click(object sender, EventArgs e)
+        {
+            if (ClaimsGridView.SelectedRow != null)
+            {
+                // Retrieve the selected Disbursement_Claim_ID from the GridView
+                int disbursementClaimId = Convert.ToInt32(ClaimsGridView.SelectedRow.Cells[0].Text);
+
+                // Create the PDF document
+                Document pdfDoc = new Document(PageSize.A4, 25, 25, 30, 30);
+                MemoryStream stream = new MemoryStream();
+                PdfWriter.GetInstance(pdfDoc, stream);
+                pdfDoc.Open();
+
+                // Add Title and Claim Details
+                pdfDoc.Add(new Paragraph("Disbursement Claim", new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD)));
+                pdfDoc.Add(new Paragraph(" "));
+
+                // Load and add claim details
+                AddClaimDetailsToPDF(disbursementClaimId, pdfDoc);
+
+                // Load and add expense details
+                AddExpenseDetailsToPDF(disbursementClaimId, pdfDoc);
+
+                // Load and add travel details
+                AddTravelDetailsToPDF(disbursementClaimId, pdfDoc);
+
+                pdfDoc.Close();
+
+                // Send the PDF as a downloadable file
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "attachment;filename=DisbursementClaim.pdf");
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.BinaryWrite(stream.ToArray());
+                Response.End();
+            }
+            else
+            {
+                Console.WriteLine("Please select a claim to generate the PDF.");
+            }
+        }
+
+        // Method to add claim details to PDF
+        private void AddClaimDetailsToPDF(int disbursementClaimId, Document pdfDoc)
+        {
+            string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            string query = @"SELECT 
+                        dc.Disbursement_Claim_ID,
+                        pa.Assignment_ID,
+                        dc.Disbursement_Travel_Total,
+                        dc.Disbursement_Expense_Total,
+                        dc.Disbursement_Total_Claim,
+                        dc.Disbursement_Date,
+                        p.Project_Name
+                     FROM 
+                        DisbursementClaimtbl dc
+                     INNER JOIN 
+                        ProjectAssignmenttbl pa ON dc.Assignment_ID = pa.Assignment_ID
+                     INNER JOIN 
+                        Projecttbl p ON pa.Project_ID = p.Project_ID
+                     WHERE 
+                        dc.Disbursement_Claim_ID = @disbursementClaimId";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@disbursementClaimId", disbursementClaimId);
+
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Add details to PDF
+                            pdfDoc.Add(new Paragraph("Claim ID: " + reader["Disbursement_Claim_ID"]));
+                            pdfDoc.Add(new Paragraph("Project Name: " + reader["Project_Name"]));
+                            pdfDoc.Add(new Paragraph("Total Travel Cost: " + reader["Disbursement_Travel_Total"]));
+                            pdfDoc.Add(new Paragraph("Total Expense Cost: " + reader["Disbursement_Expense_Total"]));
+                            pdfDoc.Add(new Paragraph("Total Claim: " + reader["Disbursement_Total_Claim"]));
+                            pdfDoc.Add(new Paragraph("Claim Date: " + Convert.ToDateTime(reader["Disbursement_Date"]).ToShortDateString()));
+                            pdfDoc.Add(new Paragraph(" "));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Method to add expense details to PDF
+        private void AddExpenseDetailsToPDF(int disbursementClaimId, Document pdfDoc)
+        {
+            string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            string query = @"SELECT 
+                        e.Expense_ID,
+                        e.Expense_Total,
+                        e.Expense_Date,
+                        et.Expense_Name
+                     FROM 
+                        Expensetbl e
+                     INNER JOIN 
+                        ExpenseTypetbl et ON e.Expense_Type_ID = et.Expense_Type_ID
+                     WHERE 
+                        e.Disbursement_Claim_ID = @disbursementClaimId";
+
+            PdfPTable expenseTable = new PdfPTable(4);
+            expenseTable.AddCell("Expense ID");
+            expenseTable.AddCell("Expense Name");
+            expenseTable.AddCell("Expense Total");
+            expenseTable.AddCell("Expense Date");
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@disbursementClaimId", disbursementClaimId);
+
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            expenseTable.AddCell(reader["Expense_ID"].ToString());
+                            expenseTable.AddCell(reader["Expense_Name"].ToString());
+                            expenseTable.AddCell(reader["Expense_Total"].ToString());
+                            expenseTable.AddCell(Convert.ToDateTime(reader["Expense_Date"]).ToShortDateString());
+                        }
+                    }
+                }
+            }
+
+            pdfDoc.Add(new Paragraph("Expense Details", new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)));
+            pdfDoc.Add(expenseTable);
+            pdfDoc.Add(new Paragraph(" "));
+        }
+
+        // Method to add travel details to PDF
+        private void AddTravelDetailsToPDF(int disbursementClaimId, Document pdfDoc)
+        {
+            string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            string query = @"SELECT 
+                        Travel_ID,
+                        Travel_Description,
+                        Travel_Date,
+                        Travel_Mileage,
+                        Travel_Total
+                     FROM 
+                        Traveltbl
+                     WHERE 
+                        Disbursement_Claim_ID = @disbursementClaimId";
+
+            PdfPTable travelTable = new PdfPTable(4);
+            travelTable.AddCell("Travel ID");
+            travelTable.AddCell("Description");
+            travelTable.AddCell("Mileage");
+            travelTable.AddCell("Date");
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@disbursementClaimId", disbursementClaimId);
+
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            travelTable.AddCell(reader["Travel_ID"].ToString());
+                            travelTable.AddCell(reader["Travel_Description"].ToString());
+                            travelTable.AddCell(reader["Travel_Mileage"].ToString());
+                            travelTable.AddCell(Convert.ToDateTime(reader["Travel_Date"]).ToShortDateString());
+                        }
+                    }
+                }
+            }
+
+            pdfDoc.Add(new Paragraph("Travel Details", new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD)));
+            pdfDoc.Add(travelTable);
+            pdfDoc.Add(new Paragraph(" "));
         }
     }
 }

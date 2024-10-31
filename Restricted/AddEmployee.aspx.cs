@@ -95,7 +95,7 @@ namespace ProjectSite.Restricted
                     // Insert into Employee table
                     using (SqlCommand cmdEmployee = new SqlCommand(employeeQuery, conn, transaction))
                     {
-                        cmdEmployee.Parameters.AddWithValue("@RSA_ID", Guid.NewGuid().ToString());
+                        cmdEmployee.Parameters.AddWithValue("@RSA_ID", EmployeeRSAID.Text);
                         cmdEmployee.Parameters.AddWithValue("@EmployeeName", EmployeeName.Text);
                         cmdEmployee.Parameters.AddWithValue("@EmployeeSurname", EmployeeSurname.Text);
                         cmdEmployee.Parameters.AddWithValue("@EmployeeJobTitle", EmployeeJobTitle.Text);

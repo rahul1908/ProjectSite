@@ -54,7 +54,9 @@
         <asp:BoundField DataField="Travel_Total" HeaderText="Travel Total" DataFormatString="{0:C}" />
         <asp:BoundField DataField="Travel_Proof" HeaderText="Proof" />
             </Columns>
+           
         </asp:GridView>
+         <asp:Button ID="btnGeneratePDF" runat="server" Text="Generate PDF" CssClass="btn btn-secondary" OnClick="btnGeneratePDF_Click" />
     </asp:Panel>
 
     <style>
