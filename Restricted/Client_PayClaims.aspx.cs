@@ -19,7 +19,7 @@ namespace ProjectSite.Restricted
             if (!IsPostBack)
             {
                 // Check if the user is authenticated and has the "Client" role
-                if (User.Identity.IsAuthenticated)//&& User.IsInRole("Client"))
+                if (User.Identity.IsAuthenticated && User.IsInRole("Client"))
                 {
                     VerifyClientRole();
                 }
@@ -125,14 +125,14 @@ namespace ProjectSite.Restricted
 
         private void LoadClaims(int projectId)
         {
-            string query = @"dc.Disbursement_Claim_ID, 
+            string query = @" SELECT dc.Disbursement_Claim_ID, 
        dc.Disbursement_Total_Claim, 
        dc.Disbursement_Date 
 FROM DisbursementClaimtbl dc
 INNER JOIN ProjectAssignmenttbl pa ON dc.Assignment_ID = pa.Assignment_ID
 INNER JOIN Projecttbl p ON pa.Project_ID = p.Project_ID
 WHERE p.Project_ID = @ProjectId
-AND dc.Disbursement_Approved = 'Approved'.";
+AND dc.Disbursement_Approved = 'Approved' ";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {

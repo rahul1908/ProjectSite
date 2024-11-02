@@ -113,7 +113,7 @@ namespace ProjectSite.Restricted
                                  dc.Disbursement_Expense_Total, dc.Disbursement_Total_Claim, dc.Disbursement_Date 
                                  FROM DisbursementClaimtbl dc
                                  INNER JOIN ProjectAssignmenttbl pa ON dc.Assignment_ID = pa.Assignment_ID
-                                 WHERE pa.Project_ID = @projectId";
+                                 WHERE pa.Project_ID = @projectId AND dc.Disbursement_Approved='Not Approved'";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
