@@ -239,6 +239,9 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
                             sqlDSUpdateDisbursementValues.Update();
                             sqlDSUpdateAssignmentValues.Update();
+                            newAssignmentBalance();
+                            lblAssignmentBalance.Text = "The balance for this project is: " +
+    Convert.ToDecimal(Session["assignment_balance"]).ToString("C", new CultureInfo("en-ZA"));
                         }
                     }
                 }
@@ -268,6 +271,9 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
                             sqlDSUpdateDisbursementValues.Update();
                             sqlDSUpdateAssignmentValues.Update();
+                            newAssignmentBalance();
+                            lblAssignmentBalance.Text = "The balance for this project is: " +
+    Convert.ToDecimal(Session["assignment_balance"]).ToString("C", new CultureInfo("en-ZA"));
                         }
                     }
                 }
@@ -302,6 +308,40 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             }
         }
 
+        private void newAssignmentBalance()
+        {
+            string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            // get manager id
+            string query = @"SELECT Assignment_Claim_Balance FROM ProjectAssignmenttbl WHERE Assignment_ID = @id
+
+                            ";
+            using (SqlConnection conn = new SqlConnection(connectionString)) // New connection for the assignment query
+            {
+                using (SqlCommand assignmentBalanceCmd = new SqlCommand(query, conn))
+                {
+                    // Add parameters to the assignment query
+                    assignmentBalanceCmd.Parameters.AddWithValue("@id", Session["assignment_id"]);
+
+                    // Open the connection for the assignment query
+                    conn.Open();
+
+                    // Execute the assignment query and get the result
+                    object assignmentBalance = assignmentBalanceCmd.ExecuteScalar();
+
+                    // Check if the assignment ID is not null
+                    if (assignmentBalance != null)
+                    {
+                       // Label3.Text = "Amount Available for this project : " + assignmentBalance.ToString();
+                        Session["assignment_balance"] = assignmentBalance;
+                    }
+                    else
+                    {
+                        Response.Redirect("~/Restricted/ProjectSelect.aspx");
+
+                    }
+                }
+            }
+        }
 
         private decimal totalEntry()
         {
