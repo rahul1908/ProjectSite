@@ -196,48 +196,195 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            bool travelInserted = false;
-            bool expenseInserted = false;
-
-            if (chbTravel.Checked)
+            // Proceed only if at least one checkbox is checked
+            if (chbExpense.Checked || chbTravel.Checked)
             {
-                sqlDSInsertTravel.Insert();
-                travelInserted = true;
-            }
+                bool travelInserted = false;
+                bool expenseInserted = false;
 
-            if (chbExpense.Checked)
-            {
-                sqlDSInsertExpense.Insert();
-                expenseInserted = true;
-            }
+                // Retrieve the assignment balance from the session
+                decimal assignmentBalance = Convert.ToDecimal(Session["assignment_balance"]);
 
-            if (travelInserted || expenseInserted)
-            {
+                // Check if travel entry is valid and checkbox is checked
+                if (chbTravel.Checked)
+                {
+                    if (validTravelEntries())
+                    {
+                        // Validate against the assignment balance
+                        if (decimal.TryParse(txtTravelTotal.Text, out decimal travelTotal))
+                        {
+                            if (travelTotal > assignmentBalance)
+                            {
+                                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel total exceeds available balance.');", true);
+                                return; // Exit if validation fails
+                            }
+
+                            sqlDSInsertTravel.Insert();
+                            travelInserted = true;
+
+                            // display methods
+                            btnNewRecord.Visible = true;
+                            btnNewDisbursement.Visible = true;
+                            btnSubmit.Enabled = false;
+
+                            sqlDSUpdateDisbursementValues.Update();
+                            sqlDSUpdateAssignmentValues.Update();
+                        }
+                    }
+                }
+
+                // Check if expense entry is valid and checkbox is checked
+                if (chbExpense.Checked)
+                {
+                    if (validExpenseEntries())
+                    {
+                        // Validate against the assignment balance
+                        if (decimal.TryParse(txtExpenseAmount.Text, out decimal expenseAmount))
+                        {
+                            if (expenseAmount > assignmentBalance)
+                            {
+                                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Expense amount exceeds available balance.');", true);
+                                return; // Exit if validation fails
+                            }
+
+                            sqlDSInsertExpense.Insert();
+                            expenseInserted = true;
+
+                            // display methods
+                            btnNewRecord.Visible = true;
+                            btnNewDisbursement.Visible = true;
+                            btnSubmit.Enabled = false;
+
+                            sqlDSUpdateDisbursementValues.Update();
+                            sqlDSUpdateAssignmentValues.Update();
+                        }
+                    }
+                }
+
                 // Prepare the message for the alert based on what was inserted
-                string message = "Insert successful!";
-                if (travelInserted && expenseInserted)
+                if (travelInserted || expenseInserted)
                 {
-                    message = "Travel and Expense records inserted successfully!";
-                }
-                else if (travelInserted)
-                {
-                    message = "Travel record inserted successfully!";
-                }
-                else if (expenseInserted)
-                {
-                    message = "Expense record inserted successfully!";
+                    string message = "Insert successful!";
+                    if (travelInserted && expenseInserted)
+                    {
+                        message = "Travel and Expense records inserted successfully!";
+                    }
+                    else if (travelInserted)
+                    {
+                        message = "Travel record inserted successfully!";
+                    }
+                    else if (expenseInserted)
+                    {
+                        message = "Expense record inserted successfully!";
+                    }
+
+                    // Register the JavaScript to show the alert
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('{message}');", true);
                 }
 
-                // Register the JavaScript to show the alert
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('{message}');", true);
+                
+            }
+            else
+            {
+                // Optional: alert the user if no checkboxes are checked
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please select at least one option (Travel or Expense).');", true);
+            }
+        }
+
+
+
+
+
+
+        private bool validTravelEntries()
+        {
+            // Validate travel date
+            DateTime travelDate;
+            if (!DateTime.TryParse(txtTravelDate.Text, out travelDate))
+            {
+                // Invalid date format
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please enter a valid travel date.');", true);
+                return false;
             }
 
-            btnNewRecord.Visible = true;
-            btnNewDisbursement.Visible = true;
+            // Check if the date is in the future or more than 7 days in the past
+            DateTime currentDate = DateTime.Now;
+            if (travelDate > currentDate)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel date cannot be in the future.');", true);
+                return false;
+            }
+            if ((currentDate - travelDate).TotalDays > 7)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel date cannot be more than 7 days earlier than today.');", true);
+                return false;
+            }
 
-            sqlDSUpdateDisbursementValues.Update();
-            sqlDSUpdateAssignmentValues.Update();
+            // Validate mileage
+            if (string.IsNullOrWhiteSpace(txtMileage.Text) || !decimal.TryParse(txtMileage.Text, out decimal mileage))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please enter a valid numeric mileage.');", true);
+                return false;
+            }
+
+            // Validate vehicle description
+            if (string.IsNullOrWhiteSpace(txtVehicleDescription.Text))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Vehicle description cannot be empty.');", true);
+                return false;
+            }
+
+            // Validate travel description
+            if (string.IsNullOrWhiteSpace(txtTravelDescription.Text))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel description cannot be empty.');", true);
+                return false;
+            }
+
+            // If all validations pass, return true
+            return true;
         }
+
+
+        private bool validExpenseEntries()
+        {
+            // Validate expense date
+            DateTime expenseDate;
+            if (!DateTime.TryParse(txtExpenseDate.Text, out expenseDate))
+            {
+                ShowAlert("Please enter a valid expense date.");
+                return false;
+            }
+
+            // Check if the date is in the future or more than 7 days in the past
+            DateTime currentDate = DateTime.Now;
+            if (expenseDate > currentDate)
+            {
+                ShowAlert("Expense date cannot be in the future.");
+                return false;
+            }
+            if ((currentDate - expenseDate).TotalDays > 7)
+            {
+                ShowAlert("Expense date cannot be more than 7 days earlier than today.");
+                return false;
+            }
+
+            // Validate expense amount
+            if (string.IsNullOrWhiteSpace(txtExpenseAmount.Text) || !decimal.TryParse(txtExpenseAmount.Text, out decimal expenseAmount))
+            {
+                ShowAlert("Please enter a valid numeric expense amount.");
+                return false;
+            }
+
+            // If all validations pass, return true
+            return true;
+        }
+
+        private void ShowAlert(string message)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('{message}');", true);
+        }
+
 
 
         protected void chbTravel_CheckedChanged(object sender, EventArgs e)
@@ -266,13 +413,23 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
         protected void txtMileage_TextChanged(object sender, EventArgs e)
         {
-            int assignment_id = (int)Session["assignment_id"];
-            double client_rate = GetClientRate(assignment_id);
-            double mileage = double.Parse(txtMileage.Text);
-            double totalTravel = client_rate * mileage;
+            // Check if the input is not empty and is a valid number
+            if (!string.IsNullOrWhiteSpace(txtMileage.Text) && double.TryParse(txtMileage.Text, out double mileage))
+            {
+                int assignment_id = (int)Session["assignment_id"];
+                double client_rate = GetClientRate(assignment_id);
+                double totalTravel = client_rate * mileage;
 
-            txtTravelTotal.Text = totalTravel.ToString();
+                txtTravelTotal.Text = totalTravel.ToString("F2"); // Format to 2 decimal places, optional
+            }
+            else
+            {
+                // Show an alert to the user if input is invalid
+                ShowAlert("Please enter a valid number for mileage.");
+                txtMileage.Text = ""; // Clear the invalid input
+            }
         }
+
 
         protected void btnNewRecord_Click(object sender, EventArgs e)
         {
@@ -287,6 +444,9 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             //ddlExpenseType.Text = "";
 
             btnNewRecord.Visible = false;
+            chbExpense.Checked = false;
+            chbTravel.Checked = false;
+            btnSubmit.Enabled = true;
         }
 
         protected void btnNewDisbursement_Click(object sender, EventArgs e)

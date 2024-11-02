@@ -8,6 +8,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
+using System.Web.UI;
 
 namespace ProjectSite
 {
@@ -15,6 +16,22 @@ namespace ProjectSite
     {
         void Application_Start(object sender, EventArgs e)
         {
+            // Map the jQuery script required for Unobtrusive Validation
+            ScriptManager.ScriptResourceMapping.AddDefinition(
+                "jquery",
+                new ScriptResourceDefinition
+                {
+                    Path = "~/Scripts/jquery-3.6.0.min.js",  // Adjust the path as per your project structure
+            DebugPath = "~/Scripts/jquery-3.6.0.js"
+                });
+
+            ScriptManager.ScriptResourceMapping.AddDefinition(
+    "bootstrap",
+    new ScriptResourceDefinition
+    {
+        Path = "~/Scripts/bootstrap.min.js",  // Ensure this path ends in .js
+        DebugPath = "~/Scripts/bootstrap.js"   // Ensure this path also ends in .js
+    });
             // Code that runs on application startup
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
