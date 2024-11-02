@@ -280,6 +280,7 @@
     <Content Include="Restricted\RecordExpense.aspx" />
     <Content Include="Restricted\RecordTimesheet.aspx" />
     <Content Include="Restricted\RecordTravel.aspx" />
+    <Content Include="Restricted\UpdateDisbursements.aspx" />
     <Content Include="Restricted\Web.config" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -557,6 +558,13 @@
     </Compile>
     <Compile Include="Restricted\RecordTravel.aspx.designer.cs">
       <DependentUpon>RecordTravel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Restricted\UpdateDisbursements.aspx.cs">
+      <DependentUpon>UpdateDisbursements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Restricted\UpdateDisbursements.aspx.designer.cs">
+      <DependentUpon>UpdateDisbursements.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
