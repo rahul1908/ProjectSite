@@ -213,9 +213,10 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
                         // Validate against the assignment balance
                         if (decimal.TryParse(txtTravelTotal.Text, out decimal travelTotal))
                         {
-                            if (travelTotal > assignmentBalance)
+                            decimal total_entry = totalEntry();
+                            if (total_entry > assignmentBalance)
                             {
-                                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel total exceeds available balance.');", true);
+                                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Entry exceeds available balance.');", true);
                                 return; // Exit if validation fails
                             }
 
@@ -241,9 +242,10 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
                         // Validate against the assignment balance
                         if (decimal.TryParse(txtExpenseAmount.Text, out decimal expenseAmount))
                         {
-                            if (expenseAmount > assignmentBalance)
+                            decimal total_entry = totalEntry();
+                            if (total_entry > assignmentBalance)
                             {
-                                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Expense amount exceeds available balance.');", true);
+                                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Entry exceeds available balance.');", true);
                                 return; // Exit if validation fails
                             }
 
@@ -292,6 +294,25 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
         }
 
 
+        private decimal totalEntry()
+        {
+            decimal expenseAmount = 0;
+            decimal travelTotal = 0;
+
+            if (chbTravel.Checked && !decimal.TryParse(txtTravelTotal.Text, out travelTotal))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please enter a valid travel amount.');", true);
+                return 0;
+            }
+
+            if (chbExpense.Checked && !decimal.TryParse(txtExpenseAmount.Text, out expenseAmount))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please enter a valid expense amount.');", true);
+                return 0;
+            }
+
+            return expenseAmount + travelTotal;
+        }
 
 
 
