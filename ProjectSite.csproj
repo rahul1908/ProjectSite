@@ -277,6 +277,7 @@
     <Content Include="Restricted\Admin_Project.aspx" />
     <Content Include="Restricted\ApproveClaims.aspx" />
     <Content Include="Restricted\AssignProjects.aspx" />
+    <Content Include="Restricted\Client_PayClaims.aspx" />
     <Content Include="Restricted\ProjectSelect.aspx" />
     <Content Include="Restricted\RecordExpense.aspx" />
     <Content Include="Restricted\RecordTimesheet.aspx" />
@@ -538,6 +539,13 @@
     </Compile>
     <Compile Include="Restricted\AssignProjects.aspx.designer.cs">
       <DependentUpon>AssignProjects.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Restricted\Client_PayClaims.aspx.cs">
+      <DependentUpon>Client_PayClaims.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Restricted\Client_PayClaims.aspx.designer.cs">
+      <DependentUpon>Client_PayClaims.aspx</DependentUpon>
     </Compile>
     <Compile Include="Restricted\ProjectSelect.aspx.cs">
       <DependentUpon>ProjectSelect.aspx</DependentUpon>
