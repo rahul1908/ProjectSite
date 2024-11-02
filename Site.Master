@@ -111,6 +111,7 @@
                                 <li><a class="dropdown-item" href="/Restricted/AssignProjects">Assign Projects</a></li>
                                 <li><a class="dropdown-item" href="/Restricted/AddProject">Add Project</a></li>
                                 <li><a class="dropdown-item" href="/Restricted/AddEmployee">Add Employee</a></li>
+                                <li><a class="dropdown-item" href="/Restricted/ApproveClaims">Approve Claims</a></li>
                             </ul>
                         </li>
                     </ul>
