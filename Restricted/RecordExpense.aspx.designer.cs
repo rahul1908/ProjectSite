@@ -15,13 +15,13 @@ namespace ProjectSite.Restricted
     {
 
         /// <summary>
-        /// LabelProjectName control.
+        /// lblSelectedProject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LabelProjectName;
+        protected global::System.Web.UI.WebControls.Label lblSelectedProject;
 
         /// <summary>
         /// lblassignID control.
@@ -31,6 +31,15 @@ namespace ProjectSite.Restricted
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblassignID;
+
+        /// <summary>
+        /// lblAssignmentBalance control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAssignmentBalance;
 
         /// <summary>
         /// Label1 control.

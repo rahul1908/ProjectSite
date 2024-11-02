@@ -7,18 +7,33 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Record Disbursement</h2>
-         <h4 class="text-center mb-3">Selected Project:</h4>
-        <asp:Label ID="LabelProjectName" runat="server" Text="" Font-Bold="True" Font-Size="Large"></asp:Label>
+       <h2 class="text-center mb-4" style="background-color: #a8e6cf;">Record Disbursement</h2>
+<asp:Label ID="lblSelectedProject" runat="server" Text="Selected Project:" CssClass="text-center mb-3" 
+           Style="display: block; text-align: center; font-weight: bold; font-size: large; background-color: #a8e6cf; padding: 10px;" />
+
         </br>
-        <asp:Label ID="lblassignID" runat="server" Text="Label"></asp:Label>
+        <asp:Label ID="lblassignID" runat="server" Text="Label"
+            Style="font-weight: bold; font-size: 16px;"></asp:Label>
         </br>
-        <asp:Label ID="Label1" runat="server" Text="What do you want to record?"></asp:Label>
+        <asp:Label ID="lblAssignmentBalance" runat="server" Text="Label"
+            Style="font-weight: bold; font-size: 16px;"></asp:Label>
+         </br>
         </br>
-        <asp:CheckBox ID="chbTravel" runat="server" Text="Select to record travel details" AutoPostBack="True" OnCheckedChanged="chbTravel_CheckedChanged" />
-        </br>
-        <asp:CheckBox ID="chbExpense" runat="server" Text="Select to record expense details" AutoPostBack="True" OnCheckedChanged="chbExpense_CheckedChanged" />
-        </br>
+       <div style="text-align: center; background-color: #e6f9e6; padding: 20px; border-radius: 10px;">
+           <asp:Label ID="Label1" runat="server" Text="What do you want to record?"
+           style="font-weight: bold; font-size: 24px; font-family: Arial, sans-serif;"></asp:Label>
+
+           <br />
+           <asp:CheckBox ID="chbTravel" runat="server" Text="   Select to record travel details"
+               Font-Bold="False" Font-Size="Large" AutoPostBack="True"
+               OnCheckedChanged="chbTravel_CheckedChanged" />
+           <br />
+           <asp:CheckBox ID="chbExpense" runat="server" Text="  Select to record expense details"
+               Font-Bold="False" Font-Size="Large" AutoPostBack="True"
+               OnCheckedChanged="chbExpense_CheckedChanged" />
+           <br />
+       </div>
+
         <!-- Travel Section -->
         <div class="card mb-4">
             <div class="card-header">

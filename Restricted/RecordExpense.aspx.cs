@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
+
 namespace ProjectSite.Restricted
 {
     public partial class RecordExpense : System.Web.UI.Page
@@ -21,6 +23,13 @@ namespace ProjectSite.Restricted
                     // Check if the user has the "Employee" role
                     if (User.IsInRole("Employee"))
                     {
+
+                        lblAssignmentBalance.Text = "The balance for this project is: " +
+    Convert.ToDecimal(Session["assignment_balance"]).ToString("C", new CultureInfo("en-ZA"));
+                        lblSelectedProject.Text = "Selected Project : " + Session["selected_project_name"];
+                        lblassignID.Text = "Assignment ID : " + Session["assignment_id"];
+
+
                         // Get the logged-in user's email
                         string userEmail = User.Identity.Name;
 
@@ -93,7 +102,7 @@ namespace ProjectSite.Restricted
                                     // Check if the assignment ID is not null
                                     if (assignmentId != null)
                                     {
-                                        lblassignID.Text = assignmentId.ToString();
+                                        lblassignID.Text = "This projects assignment ID is: "+assignmentId.ToString();
                                     }
                                     else
                                     {
