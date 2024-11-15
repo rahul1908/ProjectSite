@@ -33,58 +33,85 @@ namespace ProjectSite.Restricted
         protected global::System.Web.UI.WebControls.SqlDataSource sqlDSProject;
 
         /// <summary>
-        /// ddlDisbursementDate control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDisbursementDate;
+        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// sqlDSDisbursementDate control.
+        /// gvDisbursements control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sqlDSDisbursementDate;
+        protected global::System.Web.UI.WebControls.GridView gvDisbursements;
 
         /// <summary>
-        /// ddlProjectName control.
+        /// sqlDSDisplayDisbursements control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProjectName;
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlDSDisplayDisbursements;
 
         /// <summary>
-        /// txtNewAssignmentID control.
+        /// sqlDSSelectTravel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNewAssignmentID;
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlDSSelectTravel;
 
         /// <summary>
-        /// txtNewAssignmentBalance control.
+        /// sqlDSSelectExpense control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNewAssignmentBalance;
+        protected global::System.Web.UI.WebControls.SqlDataSource sqlDSSelectExpense;
 
         /// <summary>
-        /// txtCurrentDisbursementID control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCurrentDisbursementID;
+        protected global::System.Web.UI.WebControls.Label Label2;
+
+        /// <summary>
+        /// gvSelectTravel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvSelectTravel;
+
+        /// <summary>
+        /// Label3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label3;
+
+        /// <summary>
+        /// gvSelectExpense control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvSelectExpense;
 
         /// <summary>
         /// txtTravelDate control.
@@ -132,6 +159,15 @@ namespace ProjectSite.Restricted
         protected global::System.Web.UI.WebControls.TextBox txtTravelDescription;
 
         /// <summary>
+        /// btnUpdateTravel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUpdateTravel;
+
+        /// <summary>
         /// txtExpenseDate control.
         /// </summary>
         /// <remarks>
@@ -168,12 +204,12 @@ namespace ProjectSite.Restricted
         protected global::System.Web.UI.WebControls.SqlDataSource sqlDSFillExpenseType;
 
         /// <summary>
-        /// btnUpdateDisbursement control.
+        /// btnUpdateExpense control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUpdateDisbursement;
+        protected global::System.Web.UI.WebControls.Button btnUpdateExpense;
     }
 }

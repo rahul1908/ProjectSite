@@ -12,7 +12,7 @@
             <div class="row mb-3">
                 <label for="projectSelection" class="col-sm-2 col-form-label">Select Project</label>
                 <div class="col-sm-10">
-                    <asp:DropDownList ID="ddlProjectSelection" runat="server" CssClass="form-select" DataSourceID="sqlDSProject" DataTextField="Project_Name" DataValueField="Project_ID" AppendDataBoundItems="True" AutoPostBack="True">
+                    <asp:DropDownList ID="ddlProjectSelection" runat="server" CssClass="form-select" DataSourceID="sqlDSProject" DataTextField="Project_Name" DataValueField="Project_ID" AppendDataBoundItems="True" AutoPostBack="True" OnSelectedIndexChanged="ddlProjectSelection_SelectedIndexChanged">
                         <asp:ListItem Text="-- Select a Project --" Value="" />
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="sqlDSProject" runat="server" 
@@ -26,68 +26,111 @@
             </div>
 
             <!-- Disbursement Date Selection Section -->
-            <div class="row mb-3">
-                <label for="disbursementDate" class="col-sm-2 col-form-label">Select Disbursement Date</label>
-                <div class="col-sm-10">
-                    <asp:DropDownList ID="ddlDisbursementDate" runat="server" CssClass="form-select" DataSourceID="sqlDSDisbursementDate" DataTextField="DisbursementDate" DataValueField="DisbursementID" AppendDataBoundItems="true">
-                        <asp:ListItem Text="-- Select Disbursement Date --" Value="" />
-                    </asp:DropDownList>
-                    <asp:SqlDataSource ID="sqlDSDisbursementDate" runat="server"
-                        ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>"
-                        SelectCommand="SELECT DisbursementClaimtbl.Disbursement_Claim_ID, DisbursementClaimtbl.Disbursement_Date FROM DisbursementClaimtbl INNER JOIN ProjectAssignmenttbl ON DisbursementClaimtbl.Assignment_ID = ProjectAssignmenttbl.Assignment_ID WHERE (ProjectAssignmenttbl.Project_ID = @ProjectID) AND (ProjectAssignmenttbl.Employee_ID = @employeeID)">
-                        <SelectParameters>
-                            <asp:ControlParameter ControlID="ddlProjectSelection" Name="ProjectID" PropertyName="SelectedValue" Type="Int32" />
-                            <asp:SessionParameter Name="employeeID" SessionField="user_id" />
-                        </SelectParameters>
-                    </asp:SqlDataSource>
-                </div>
-            </div>
         </div>
 
 
         <!-- Project Selection Section -->
-<div class="card mb-4">
-    <div class="card-header">
-        <h5 class="card-title">Project Selection</h5>
-    </div>
-    <div class="card-body">
-        <!-- Project Name Selection -->
-        <div class="row mb-3">
-            <label for="projectName" class="col-sm-2 col-form-label">Project Name</label>
-            <div class="col-sm-10">
-                <asp:DropDownList ID="ddlProjectName" runat="server" CssClass="form-select">
-                    <asp:ListItem Text="Select Project Name" Value="" />
-                </asp:DropDownList>
-            </div>
-        </div>
-
-        <!-- New Assignment ID -->
-        <div class="row mb-3">
-            <label for="newAssignmentID" class="col-sm-2 col-form-label">New Assignment ID</label>
-            <div class="col-sm-10">
-                <asp:TextBox ID="txtNewAssignmentID" runat="server" CssClass="form-control" placeholder="Enter new assignment ID"></asp:TextBox>
-            </div>
-        </div>
-
-        <!-- New Assignment Balance -->
-        <div class="row mb-3">
-            <label for="newAssignmentBalance" class="col-sm-2 col-form-label">New Assignment Balance</label>
-            <div class="col-sm-10">
-                <asp:TextBox ID="txtNewAssignmentBalance" runat="server" CssClass="form-control" placeholder="Enter new assignment balance"></asp:TextBox>
-            </div>
-        </div>
-
-        <!-- Current Disbursement ID -->
-        <div class="row mb-3">
-            <label for="currentDisbursementID" class="col-sm-2 col-form-label">Current Disbursement ID</label>
-            <div class="col-sm-10">
-                <asp:TextBox ID="txtCurrentDisbursementID" runat="server" CssClass="form-control" placeholder="Enter current disbursement ID"></asp:TextBox>
-            </div>
-        </div>
-    </div>
-</div>
+        <asp:Label ID="Label1" runat="server" Text="Select the Disbursement you want to update"></asp:Label>
+        <asp:GridView runat="server" ID="gvDisbursements" AutoGenerateColumns="False" DataKeyNames="Disbursement_Claim_ID" DataSourceID="sqlDSDisplayDisbursements" CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="gvDisbursements_SelectedIndexChanged">
+            <AlternatingRowStyle BackColor="White" />
+            <Columns>
+                <asp:CommandField ShowSelectButton="True" />
+                <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Disbursement_Claim_ID" InsertVisible="False" ReadOnly="True" SortExpression="Disbursement_Claim_ID" />
+                <asp:BoundField DataField="Assignment_ID" HeaderText="Assignment_ID" SortExpression="Assignment_ID" />
+                <asp:BoundField DataField="Disbursement_Travel_Total" HeaderText="Disbursement_Travel_Total" SortExpression="Disbursement_Travel_Total" />
+                <asp:BoundField DataField="Disbursement_Expense_Total" HeaderText="Disbursement_Expense_Total" SortExpression="Disbursement_Expense_Total" />
+                <asp:BoundField DataField="Disbursement_Total_Claim" HeaderText="Disbursement_Total_Claim" SortExpression="Disbursement_Total_Claim" />
+                <asp:BoundField DataField="Disbursement_Date" HeaderText="Disbursement_Date" SortExpression="Disbursement_Date" />
+                <asp:BoundField DataField="Manager_ID" HeaderText="Manager_ID" SortExpression="Manager_ID" />
+                <asp:BoundField DataField="Disbursement_Approved" HeaderText="Disbursement_Approved" SortExpression="Disbursement_Approved" />
+            </Columns>
+            <EditRowStyle BackColor="#7C6F57" />
+            <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <HeaderStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+            <RowStyle BackColor="#E3EAEB" />
+            <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
+            <SortedAscendingCellStyle BackColor="#F8FAFA" />
+            <SortedAscendingHeaderStyle BackColor="#246B61" />
+            <SortedDescendingCellStyle BackColor="#D4DFE1" />
+            <SortedDescendingHeaderStyle BackColor="#15524A" />
+        </asp:GridView>
 
 
+        <asp:SqlDataSource ID="sqlDSDisplayDisbursements" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" SelectCommand="SELECT DisbursementClaimtbl.Disbursement_Claim_ID, DisbursementClaimtbl.Assignment_ID, DisbursementClaimtbl.Disbursement_Travel_Total, DisbursementClaimtbl.Disbursement_Expense_Total, DisbursementClaimtbl.Disbursement_Total_Claim, DisbursementClaimtbl.Disbursement_Date, DisbursementClaimtbl.Manager_ID, DisbursementClaimtbl.Disbursement_Approved FROM DisbursementClaimtbl INNER JOIN ProjectAssignmenttbl ON DisbursementClaimtbl.Assignment_ID = ProjectAssignmenttbl.Assignment_ID WHERE (ProjectAssignmenttbl.Assignment_ID = @assignID) AND (ProjectAssignmenttbl.Employee_ID = @empID) AND (MONTH(DisbursementClaimtbl.Disbursement_Date) = MONTH(GETDATE())) AND (YEAR(DisbursementClaimtbl.Disbursement_Date) = YEAR(GETDATE()))">
+            <SelectParameters>
+                <asp:SessionParameter Name="assignID" SessionField="assignment_id" />
+                <asp:SessionParameter Name="empID" SessionField="employee_id" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+        <asp:SqlDataSource ID="sqlDSSelectTravel" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" SelectCommand="SELECT Travel_ID, Disbursement_Claim_ID, Assignment_ID, Travel_Description, Travel_Date, Travel_Mileage, Travel_Vehicle_Description, Travel_Total, Travel_Proof FROM Traveltbl WHERE (Disbursement_Claim_ID = @claimID)">
+            <SelectParameters>
+                <asp:ControlParameter ControlID="gvDisbursements" Name="claimID" PropertyName="SelectedValue" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+        <asp:SqlDataSource ID="sqlDSSelectExpense" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" SelectCommand="SELECT Expense_ID, Disbursement_Claim_ID, Assignment_ID, Expense_Type_ID, Expense_Total, Expense_Date, Expense_Proof FROM Expensetbl WHERE (Disbursement_Claim_ID = @claimID)">
+            <SelectParameters>
+                <asp:ControlParameter ControlID="gvDisbursements" Name="claimID" PropertyName="SelectedValue" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+
+        </br>
+        </br>
+        <asp:Label ID="Label2" runat="server" Text="Select the Travel Record you want to update"></asp:Label>
+        <asp:GridView ID="gvSelectTravel" runat="server" AutoGenerateColumns="False" CellPadding="4" DataKeyNames="Travel_ID" DataSourceID="sqlDSSelectTravel" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="gvSelectTravel_SelectedIndexChanged">
+            <AlternatingRowStyle BackColor="White" />
+            <Columns>
+                <asp:CommandField ShowSelectButton="True" />
+                <asp:BoundField DataField="Travel_ID" HeaderText="Travel_ID" InsertVisible="False" ReadOnly="True" SortExpression="Travel_ID"></asp:BoundField>
+                <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Disbursement_Claim_ID" SortExpression="Disbursement_Claim_ID"></asp:BoundField>
+                <asp:BoundField DataField="Assignment_ID" HeaderText="Assignment_ID" SortExpression="Assignment_ID"></asp:BoundField>
+                <asp:BoundField DataField="Travel_Description" HeaderText="Travel_Description" SortExpression="Travel_Description"></asp:BoundField>
+                <asp:BoundField DataField="Travel_Date" HeaderText="Travel_Date" SortExpression="Travel_Date"></asp:BoundField>
+                <asp:BoundField DataField="Travel_Mileage" HeaderText="Travel_Mileage" SortExpression="Travel_Mileage"></asp:BoundField>
+                <asp:BoundField DataField="Travel_Vehicle_Description" HeaderText="Travel_Vehicle_Description" SortExpression="Travel_Vehicle_Description"></asp:BoundField>
+                <asp:BoundField DataField="Travel_Total" HeaderText="Travel_Total" SortExpression="Travel_Total"></asp:BoundField>
+                <asp:CheckBoxField DataField="Travel_Proof" HeaderText="Travel_Proof" SortExpression="Travel_Proof" />
+            </Columns>
+            <EditRowStyle BackColor="#7C6F57" />
+            <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <HeaderStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+            <RowStyle BackColor="#E3EAEB" />
+            <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
+            <SortedAscendingCellStyle BackColor="#F8FAFA" />
+            <SortedAscendingHeaderStyle BackColor="#246B61" />
+            <SortedDescendingCellStyle BackColor="#D4DFE1" />
+            <SortedDescendingHeaderStyle BackColor="#15524A" />
+        </asp:GridView>
+
+          </br>
+        </br>
+        <asp:Label ID="Label3" runat="server" Text="Select the Travel Record you want to update"></asp:Label>
+        <asp:GridView ID="gvSelectExpense" runat="server" AutoGenerateColumns="False" CellPadding="4" DataKeyNames="Expense_ID" DataSourceID="sqlDSSelectExpense" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="gvSelectExpense_SelectedIndexChanged">
+            <AlternatingRowStyle BackColor="White" />
+            <Columns>
+                <asp:CommandField ShowSelectButton="True" />
+                <asp:BoundField DataField="Expense_ID" HeaderText="Expense_ID" InsertVisible="False" ReadOnly="True" SortExpression="Expense_ID"></asp:BoundField>
+                <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Disbursement_Claim_ID" SortExpression="Disbursement_Claim_ID"></asp:BoundField>
+                <asp:BoundField DataField="Assignment_ID" HeaderText="Assignment_ID" SortExpression="Assignment_ID"></asp:BoundField>
+                <asp:BoundField DataField="Expense_Type_ID" HeaderText="Expense_Type_ID" SortExpression="Expense_Type_ID"></asp:BoundField>
+                <asp:BoundField DataField="Expense_Total" HeaderText="Expense_Total" SortExpression="Expense_Total"></asp:BoundField>
+                <asp:BoundField DataField="Expense_Date" HeaderText="Expense_Date" SortExpression="Expense_Date"></asp:BoundField>
+                <asp:CheckBoxField DataField="Expense_Proof" HeaderText="Expense_Proof" SortExpression="Expense_Proof" />
+            </Columns>
+            <EditRowStyle BackColor="#7C6F57" />
+            <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <HeaderStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
+            <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
+            <RowStyle BackColor="#E3EAEB" />
+            <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
+            <SortedAscendingCellStyle BackColor="#F8FAFA" />
+            <SortedAscendingHeaderStyle BackColor="#246B61" />
+            <SortedDescendingCellStyle BackColor="#D4DFE1" />
+            <SortedDescendingHeaderStyle BackColor="#15524A" />
+        </asp:GridView>
+        </br>
+        </br>
         <!-- Travel Section -->
         <div class="card mb-4">
             <div class="card-header">
@@ -126,7 +169,13 @@
                 </div>
             </div>
         </div>
-
+        </br>
+        <!-- Submit Button -->
+        <div class="text-center">
+            <asp:Button ID="btnUpdateTravel" runat="server" Text="Update Travel Details" CssClass="btn btn-primary" OnClick="btnUpdateTravel_Click" />
+        </div>
+    </div>
+    </br></br>
         <!-- Expense Section -->
         <div class="card mb-4">
             <div class="card-header">
@@ -159,10 +208,10 @@
                 </div>
             </div>
         </div>
-
+    </br>
         <!-- Submit Button -->
         <div class="text-center">
-            <asp:Button ID="btnUpdateDisbursement" runat="server" Text="Update Disbursement" CssClass="btn btn-primary" OnClick="btnUpdateDisbursement_Click" />
+            <asp:Button ID="btnUpdateExpense" runat="server" Text="Update Expense Details" CssClass="btn btn-primary" OnClick="btnUpdateExpense_Click" />
         </div>
     </div>
 </asp:Content>
