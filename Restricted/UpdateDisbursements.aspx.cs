@@ -405,5 +405,49 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             // Store it in session
             Session["disbursement_id_to_update"] = disbursementId;
         }
+
+        protected void btnUpdateTravel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Execute the update command
+                sqlDSUpdateTravel.Update();
+
+                // Display a success message
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
+
+                // Rebind the GridView to reflect the updated data
+                gvSelectTravel.DataSourceID = "sqlDSSelectTravel";
+                gvSelectTravel.DataBind();
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors and display a message
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+            }
+        }
+
+
+        protected void btnUpdateExpense_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Execute the update command
+                sqlDSUpdateExpense.Update();
+
+                // Display a success message
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
+
+                // Rebind the GridView to reflect the updated data
+                gvSelectExpense.DataSourceID = "sqlDSSelectExpense";
+                gvSelectExpense.DataBind();
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors and display a failure message
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+            }
+        }
+
     }
 }
