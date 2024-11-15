@@ -50,6 +50,8 @@ namespace ProjectSite
             Session.Add("MaxDisbursementClaimID", null);
             Session.Add("assignment_balance", 0);
             Session.Add("disbursement_id_to_update", null);
+            Session.Add("selected_travel_id", null);
+            Session.Add("selected_expense_id", null);
         }
     }
 }

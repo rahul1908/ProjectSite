@@ -211,6 +211,62 @@
     </br>
         <!-- Submit Button -->
         <div class="text-center">
+            <asp:SqlDataSource ID="sqlDSUpdateTravel" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" DeleteCommand="DELETE FROM [Traveltbl] WHERE [Travel_ID] = @original_Travel_ID AND [Disbursement_Claim_ID] = @original_Disbursement_Claim_ID AND (([Assignment_ID] = @original_Assignment_ID) OR ([Assignment_ID] IS NULL AND @original_Assignment_ID IS NULL)) AND (([Travel_Description] = @original_Travel_Description) OR ([Travel_Description] IS NULL AND @original_Travel_Description IS NULL)) AND (([Travel_Date] = @original_Travel_Date) OR ([Travel_Date] IS NULL AND @original_Travel_Date IS NULL)) AND (([Travel_Mileage] = @original_Travel_Mileage) OR ([Travel_Mileage] IS NULL AND @original_Travel_Mileage IS NULL)) AND (([Travel_Vehicle_Description] = @original_Travel_Vehicle_Description) OR ([Travel_Vehicle_Description] IS NULL AND @original_Travel_Vehicle_Description IS NULL)) AND (([Travel_Total] = @original_Travel_Total) OR ([Travel_Total] IS NULL AND @original_Travel_Total IS NULL)) AND (([Travel_Proof] = @original_Travel_Proof) OR ([Travel_Proof] IS NULL AND @original_Travel_Proof IS NULL))" InsertCommand="INSERT INTO [Traveltbl] ([Disbursement_Claim_ID], [Assignment_ID], [Travel_Description], [Travel_Date], [Travel_Mileage], [Travel_Vehicle_Description], [Travel_Total], [Travel_Proof]) VALUES (@Disbursement_Claim_ID, @Assignment_ID, @Travel_Description, @Travel_Date, @Travel_Mileage, @Travel_Vehicle_Description, @Travel_Total, @Travel_Proof)" OldValuesParameterFormatString="original_{0}" SelectCommand="SELECT * FROM [Traveltbl]" UpdateCommand="UPDATE Traveltbl SET Travel_Description = @Travel_Description, Travel_Date = @Travel_Date, Travel_Mileage = @Travel_Mileage, Travel_Vehicle_Description = @Travel_Vehicle_Description, Travel_Total = @Travel_Total WHERE (Travel_ID = @travelID)">
+                <DeleteParameters>
+                    <asp:Parameter Name="original_Travel_ID" Type="Int32" />
+                    <asp:Parameter Name="original_Disbursement_Claim_ID" Type="Int32" />
+                    <asp:Parameter Name="original_Assignment_ID" Type="Int32" />
+                    <asp:Parameter Name="original_Travel_Description" Type="String" />
+                    <asp:Parameter Name="original_Travel_Date" Type="DateTime" />
+                    <asp:Parameter Name="original_Travel_Mileage" Type="Int32" />
+                    <asp:Parameter Name="original_Travel_Vehicle_Description" Type="String" />
+                    <asp:Parameter Name="original_Travel_Total" Type="Decimal" />
+                    <asp:Parameter Name="original_Travel_Proof" Type="Boolean" />
+                </DeleteParameters>
+                <InsertParameters>
+                    <asp:Parameter Name="Disbursement_Claim_ID" Type="Int32" />
+                    <asp:Parameter Name="Assignment_ID" Type="Int32" />
+                    <asp:Parameter Name="Travel_Description" Type="String" />
+                    <asp:Parameter Name="Travel_Date" Type="DateTime" />
+                    <asp:Parameter Name="Travel_Mileage" Type="Int32" />
+                    <asp:Parameter Name="Travel_Vehicle_Description" Type="String" />
+                    <asp:Parameter Name="Travel_Total" Type="Decimal" />
+                    <asp:Parameter Name="Travel_Proof" Type="Boolean" />
+                </InsertParameters>
+                <UpdateParameters>
+                    <asp:ControlParameter ControlID="txtTravelDescription" Name="Travel_Description" PropertyName="Text" Type="String" />
+                    <asp:ControlParameter ControlID="txtTravelDate" Name="Travel_Date" PropertyName="Text" Type="DateTime" />
+                    <asp:ControlParameter ControlID="txtMileage" Name="Travel_Mileage" PropertyName="Text" Type="Int32" />
+                    <asp:ControlParameter ControlID="txtVehicleDescription" Name="Travel_Vehicle_Description" PropertyName="Text" Type="String" />
+                    <asp:ControlParameter ControlID="txtTravelTotal" Name="Travel_Total" PropertyName="Text" Type="Decimal" />
+                    <asp:SessionParameter Name="travelID" SessionField="selected_travel_id" />
+                </UpdateParameters>
+            </asp:SqlDataSource>
+            <asp:SqlDataSource ID="sqlDSUpdateExpense" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" DeleteCommand="DELETE FROM [Expensetbl] WHERE [Expense_ID] = @original_Expense_ID AND (([Disbursement_Claim_ID] = @original_Disbursement_Claim_ID) OR ([Disbursement_Claim_ID] IS NULL AND @original_Disbursement_Claim_ID IS NULL)) AND (([Assignment_ID] = @original_Assignment_ID) OR ([Assignment_ID] IS NULL AND @original_Assignment_ID IS NULL)) AND (([Expense_Type_ID] = @original_Expense_Type_ID) OR ([Expense_Type_ID] IS NULL AND @original_Expense_Type_ID IS NULL)) AND (([Expense_Total] = @original_Expense_Total) OR ([Expense_Total] IS NULL AND @original_Expense_Total IS NULL)) AND (([Expense_Date] = @original_Expense_Date) OR ([Expense_Date] IS NULL AND @original_Expense_Date IS NULL)) AND (([Expense_Proof] = @original_Expense_Proof) OR ([Expense_Proof] IS NULL AND @original_Expense_Proof IS NULL))" InsertCommand="INSERT INTO [Expensetbl] ([Disbursement_Claim_ID], [Assignment_ID], [Expense_Type_ID], [Expense_Total], [Expense_Date], [Expense_Proof]) VALUES (@Disbursement_Claim_ID, @Assignment_ID, @Expense_Type_ID, @Expense_Total, @Expense_Date, @Expense_Proof)" OldValuesParameterFormatString="original_{0}" SelectCommand="SELECT * FROM [Expensetbl]" UpdateCommand="UPDATE Expensetbl SET Expense_Type_ID = @Expense_Type_ID, Expense_Total = @Expense_Total, Expense_Date = @Expense_Date WHERE (Expense_ID = @expenseID)">
+                <DeleteParameters>
+                    <asp:Parameter Name="original_Expense_ID" Type="Int32" />
+                    <asp:Parameter Name="original_Disbursement_Claim_ID" Type="Int32" />
+                    <asp:Parameter Name="original_Assignment_ID" Type="Int32" />
+                    <asp:Parameter Name="original_Expense_Type_ID" Type="Int32" />
+                    <asp:Parameter Name="original_Expense_Total" Type="Decimal" />
+                    <asp:Parameter Name="original_Expense_Date" Type="DateTime" />
+                    <asp:Parameter Name="original_Expense_Proof" Type="Boolean" />
+                </DeleteParameters>
+                <InsertParameters>
+                    <asp:Parameter Name="Disbursement_Claim_ID" Type="Int32" />
+                    <asp:Parameter Name="Assignment_ID" Type="Int32" />
+                    <asp:Parameter Name="Expense_Type_ID" Type="Int32" />
+                    <asp:Parameter Name="Expense_Total" Type="Decimal" />
+                    <asp:Parameter Name="Expense_Date" Type="DateTime" />
+                    <asp:Parameter Name="Expense_Proof" Type="Boolean" />
+                </InsertParameters>
+                <UpdateParameters>
+                    <asp:ControlParameter ControlID="ddlExpenseType" Name="Expense_Type_ID" PropertyName="SelectedValue" Type="Int32" />
+                    <asp:ControlParameter ControlID="txtExpenseAmount" Name="Expense_Total" PropertyName="Text" Type="Decimal" />
+                    <asp:ControlParameter ControlID="txtExpenseDate" Name="Expense_Date" PropertyName="Text" Type="DateTime" />
+                    <asp:SessionParameter Name="expenseID" SessionField="selected_expense_id" />
+                </UpdateParameters>
+            </asp:SqlDataSource>
             <asp:Button ID="btnUpdateExpense" runat="server" Text="Update Expense Details" CssClass="btn btn-primary" OnClick="btnUpdateExpense_Click" />
         </div>
     </div>

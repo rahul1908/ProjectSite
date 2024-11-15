@@ -351,6 +351,15 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             txtTravelTotal.Text = gvSelectTravel.SelectedRow.Cells[8].Text;
             txtVehicleDescription.Text = gvSelectTravel.SelectedRow.Cells[4].Text;
             txtTravelDescription.Text = gvSelectTravel.SelectedRow.Cells[7].Text;
+
+            // Get the selected row
+            GridViewRow row = gvSelectTravel.SelectedRow;
+
+            // Get the value from the first cell (Disbursement_Claim_ID)
+            int travelID = Convert.ToInt32(row.Cells[1].Text);
+
+            // Store it in session
+            Session["selected_travel_id"] = travelID;
         }
 
 
@@ -373,6 +382,15 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
             // Set the expense amount
             txtExpenseAmount.Text = gvSelectExpense.SelectedRow.Cells[5].Text;
+
+            // Get the selected row
+            GridViewRow row = gvSelectExpense.SelectedRow;
+
+            // Get the value from the first cell (Disbursement_Claim_ID)
+            int expenseID = Convert.ToInt32(row.Cells[1].Text);
+
+            // Store it in session
+            Session["selected_expense_id"] = expenseID;
         }
 
 
