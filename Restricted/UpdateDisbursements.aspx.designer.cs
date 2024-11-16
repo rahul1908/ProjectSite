@@ -123,6 +123,15 @@ namespace ProjectSite.Restricted
         protected global::System.Web.UI.WebControls.GridView gvSelectExpense;
 
         /// <summary>
+        /// travelDetailsPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel travelDetailsPanel;
+
+        /// <summary>
         /// txtTravelDate control.
         /// </summary>
         /// <remarks>
@@ -175,6 +184,15 @@ namespace ProjectSite.Restricted
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnUpdateTravel;
+
+        /// <summary>
+        /// expenseDetailsPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel expenseDetailsPanel;
 
         /// <summary>
         /// txtExpenseDate control.

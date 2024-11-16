@@ -311,6 +311,8 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             }
 
             assignmentBalance();
+            lblSelectDisbursement.Visible = true;
+            gvDisbursements.Visible = true;
         }
 
         protected void btnConfirmSelection_Click(object sender, EventArgs e)
@@ -361,6 +363,8 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
             // Store it in session
             Session["selected_travel_id"] = travelID;
+            travelDetailsPanel.Visible = true;
+            btnUpdateTravel.Visible = true;
         }
 
 
@@ -392,6 +396,8 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
             // Store it in session
             Session["selected_expense_id"] = expenseID;
+            expenseDetailsPanel.Visible = true;
+            btnUpdateExpense.Visible = true;
         }
 
 
@@ -405,6 +411,11 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
             // Store it in session
             Session["disbursement_id_to_update"] = disbursementId;
+
+            lblSelectTravel.Visible = true;
+            lblSelectExpense.Visible = true;
+            gvSelectTravel.Visible = true;
+            gvSelectExpense.Visible = true;
         }
 
         protected void btnUpdateTravel_Click(object sender, EventArgs e)
