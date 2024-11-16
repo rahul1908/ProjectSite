@@ -416,6 +416,9 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             lblSelectExpense.Visible = true;
             gvSelectTravel.Visible = true;
             gvSelectExpense.Visible = true;
+
+            travelDetailsPanel.Visible = false;
+            expenseDetailsPanel.Visible = false;
         }
 
         protected void btnUpdateTravel_Click(object sender, EventArgs e)
