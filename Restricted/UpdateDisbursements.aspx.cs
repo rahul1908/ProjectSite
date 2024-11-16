@@ -132,6 +132,7 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
                     if (assignmentBalance != null)
                     {
                         Session["assignment_balance"] = assignmentBalance;
+                        lblAssignmentBalance.Text = "Assignment Balance for this project: "+Session["assignment_balance"].ToString();
                     }
                     else
                     {
@@ -408,44 +409,78 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
         protected void btnUpdateTravel_Click(object sender, EventArgs e)
         {
-            try
+            decimal assignment_balance = (decimal)Session["assignment_balance"];
+            decimal total_travel = Convert.ToDecimal(txtTravelTotal.Text);
+            if (assignment_balance > total_travel)
             {
-                // Execute the update command
-                sqlDSUpdateTravel.Update();
+                try
+                {
+                    // Execute the update command
+                    sqlDSUpdateTravel.Update();
+                    sqlDSUpdateDisbursementValues.Update();
+                    sqlDSUpdateAssignmentValues.Update();
 
-                // Display a success message
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
+                    // Display a success message
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
 
-                // Rebind the GridView to reflect the updated data
-                gvSelectTravel.DataSourceID = "sqlDSSelectTravel";
-                gvSelectTravel.DataBind();
+                    // Rebind the GridView to reflect the updated data
+                    gvSelectTravel.DataSourceID = "sqlDSSelectTravel";
+                    gvSelectTravel.DataBind();
+
+                    // rebind disbursement table
+                    gvDisbursements.DataSourceID = "sqlDSDisplayDisbursements";
+                    gvDisbursements.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    // Handle any errors and display a message
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+                }
             }
-            catch (Exception ex)
-            {
-                // Handle any errors and display a message
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+            else
+            { 
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Insufficient balance for this update');", true);
+                txtMileage.Text = "";
+                txtTravelTotal.Text = "";
             }
         }
 
 
         protected void btnUpdateExpense_Click(object sender, EventArgs e)
         {
-            try
+            double assignment_balance = (double)Session["assignment_balance"];
+            double total_expense = Convert.ToDouble(txtTravelTotal.Text);
+            if (assignment_balance > total_expense)
             {
-                // Execute the update command
-                sqlDSUpdateExpense.Update();
+                try
+                {
+                    // Execute the update command
+                    sqlDSUpdateExpense.Update();
+                    sqlDSUpdateDisbursementValues.Update();
+                    sqlDSUpdateAssignmentValues.Update();
 
-                // Display a success message
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
+                    // Display a success message
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
 
-                // Rebind the GridView to reflect the updated data
-                gvSelectExpense.DataSourceID = "sqlDSSelectExpense";
-                gvSelectExpense.DataBind();
+                    // Rebind the GridView to reflect the updated data
+                    gvSelectExpense.DataSourceID = "sqlDSSelectExpense";
+                    gvSelectExpense.DataBind();
+
+                    // rebind disbursement table
+                    gvDisbursements.DataSourceID = "sqlDSDisplayDisbursements";
+                    gvDisbursements.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    // Handle any errors and display a failure message
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                // Handle any errors and display a failure message
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Insufficient balance for this update');", true);
+                txtMileage.Text = "";
+                txtTravelTotal.Text = "";
             }
         }
 
