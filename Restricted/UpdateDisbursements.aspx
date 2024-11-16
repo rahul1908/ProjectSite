@@ -6,31 +6,45 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container mt-5">
-        <!-- Project Selection Section -->
-        <div class="mb-4">
-            <h3>Update Disbursement Details</h3>
-            <div class="row mb-3">
-                <label for="projectSelection" class="col-sm-2 col-form-label">Select Project</label>
-                <div class="col-sm-10">
-                    <asp:DropDownList ID="ddlProjectSelection" runat="server" CssClass="form-select" DataSourceID="sqlDSProject" DataTextField="Project_Name" DataValueField="Project_ID" AppendDataBoundItems="True" AutoPostBack="True" OnSelectedIndexChanged="ddlProjectSelection_SelectedIndexChanged">
-                        <asp:ListItem Text="-- Select a Project --" Value="" />
-                    </asp:DropDownList>
-                    <asp:SqlDataSource ID="sqlDSProject" runat="server"
-                        ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>"
-                        SelectCommand="SELECT DISTINCT Projecttbl.Project_ID, Projecttbl.Project_Name FROM Projecttbl INNER JOIN ProjectAssignmenttbl ON Projecttbl.Project_ID = ProjectAssignmenttbl.Project_ID WHERE (ProjectAssignmenttbl.Employee_ID = @employeeID)">
-                        <SelectParameters>
-                            <asp:SessionParameter Name="employeeID" SessionField="user_id" />
-                        </SelectParameters>
-                    </asp:SqlDataSource>
-                </div>
-            </div>
-            <asp:Label ID="lblAssignmentBalance" runat="server" Text="Assignment Balance: "></asp:Label>
+        <!-- Project Selection Section with Background Color -->
+<div class="mb-4 p-3 rounded" style="background-color: #e9f7ef;">
+    <h3>Update Disbursement Details</h3>
+    <div class="row mb-3">
+        <label for="projectSelection" class="col-sm-2 col-form-label">Select Project</label>
+        <div class="col-sm-10">
+            <asp:DropDownList ID="ddlProjectSelection" runat="server" CssClass="form-select"
+                              DataSourceID="sqlDSProject"
+                              DataTextField="Project_Name"
+                              DataValueField="Project_ID"
+                              AppendDataBoundItems="True"
+                              AutoPostBack="True"
+                              OnSelectedIndexChanged="ddlProjectSelection_SelectedIndexChanged">
+                <asp:ListItem Text="-- Select a Project --" Value="" />
+            </asp:DropDownList>
+            <asp:SqlDataSource ID="sqlDSProject" runat="server"
+                               ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>"
+                               SelectCommand="SELECT DISTINCT Projecttbl.Project_ID, Projecttbl.Project_Name FROM Projecttbl INNER JOIN ProjectAssignmenttbl ON Projecttbl.Project_ID = ProjectAssignmenttbl.Project_ID WHERE (ProjectAssignmenttbl.Employee_ID = @employeeID)">
+                <SelectParameters>
+                    <asp:SessionParameter Name="employeeID" SessionField="user_id" />
+                </SelectParameters>
+            </asp:SqlDataSource>
+        </div>
+    </div>
+    <asp:Label ID="lblAssignmentBalance" runat="server"
+               Text="Assignment Balance: "
+               CssClass="text-white bg-success p-2 rounded"></asp:Label>
+</div>
+
             <!-- Disbursement Date Selection Section -->
         </div>
 
 
         <!-- Project Selection Section -->
-        <asp:Label ID="lblSelectDisbursement" runat="server" Text="Select the Disbursement you want to update" Visible="False"></asp:Label>
+<asp:Label ID="lblSelectDisbursement" runat="server" 
+           Text="Select the Disbursement you want to update:"
+           CssClass="text-center fw-bold mb-4 h5"
+           Visible="False"></asp:Label>
+
         <asp:GridView runat="server" ID="gvDisbursements" AutoGenerateColumns="False" DataKeyNames="Disbursement_Claim_ID" DataSourceID="sqlDSDisplayDisbursements" CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="gvDisbursements_SelectedIndexChanged" Visible="False">
             <AlternatingRowStyle BackColor="White" />
             <Columns>
@@ -76,7 +90,12 @@
 
         </br>
         </br>
-        <asp:Label ID="lblSelectTravel" runat="server" Text="Select the Travel Record you want to update" Visible="False"></asp:Label>
+        <asp:Label ID="lblSelectTravel" runat="server"
+           Text="Select the Travel Record you want to update"
+           CssClass="text-center fw-bold mb-4 h5"
+           Visible="False"></asp:Label>
+
+
         <asp:GridView ID="gvSelectTravel" runat="server" AutoGenerateColumns="False" CellPadding="4" DataKeyNames="Travel_ID" DataSourceID="sqlDSSelectTravel" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="gvSelectTravel_SelectedIndexChanged" Visible="False">
             <AlternatingRowStyle BackColor="White" />
             <Columns>
@@ -105,7 +124,12 @@
 
         </br>
         </br>
-        <asp:Label ID="lblSelectExpense" runat="server" Text="Select the Expense Record you want to update" Visible="False"></asp:Label>
+        <asp:Label ID="lblSelectExpense" runat="server"
+           Text="Select the Expense Record you want to update"
+           CssClass="text-center fw-bold mb-3 h5"
+           Visible="False"></asp:Label>
+
+
         <asp:GridView ID="gvSelectExpense" runat="server" AutoGenerateColumns="False" CellPadding="4" DataKeyNames="Expense_ID" DataSourceID="sqlDSSelectExpense" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="gvSelectExpense_SelectedIndexChanged" Visible="False">
             <AlternatingRowStyle BackColor="White" />
             <Columns>
@@ -132,7 +156,7 @@
         </br>
         </br>
         <!-- Travel Section -->
-        <asp:Panel ID="travelDetailsPanel" runat="server" CssClass="card mb-4" Visible="False">
+        <asp:Panel ID="travelDetailsPanel" runat="server" CssClass="card mb-4" Visible="False" BackColor="#66FF66" BorderStyle="Groove">
             <div class="card-header">
                 <h5 class="card-title">Travel Details</h5>
             </div>
@@ -180,7 +204,7 @@
     </div>
     </br></br>
         <!-- Expense Section -->
-    <asp:Panel ID="expenseDetailsPanel" runat="server" CssClass="card mb-4" Visible="False">
+    <asp:Panel ID="expenseDetailsPanel" runat="server" CssClass="card mb-4" Visible="False" BackColor="#66FF66" BorderStyle="Groove">
         <div class="card-header">
             <h5 class="card-title">Expense Details</h5>
         </div>

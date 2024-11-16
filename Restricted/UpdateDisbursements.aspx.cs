@@ -148,7 +148,8 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             double mileage;
             if (double.TryParse(txtMileage.Text, out mileage))
             {
-                double ratePerMile = 0.5; // Example rate, adjust as needed
+                int assignment_id = Convert.ToInt32(Session["assignment_id"].ToString());
+                double ratePerMile = GetClientRate(assignment_id); // Example rate, adjust as needed
                 double travelTotal = mileage * ratePerMile;
                 txtTravelTotal.Text = travelTotal.ToString();
             }
