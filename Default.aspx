@@ -1,17 +1,25 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ProjectSite._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <!-- Hero Section -->
-    <div style="background-color: #f3f3f3; padding: 60px; text-align: center;">
-        <img src="/Images/optimult_logo.png" alt="Optimult Logo" style="width: 250px; margin-bottom: 30px;">
-        <h1 style="color: #333; font-size: 3em;">Welcome to Optimult</h1>
-        <p style="color: #666; font-size: 1.5em; max-width: 800px; margin: auto; line-height: 1.8;">
-            Your trusted partner in delivering innovative energy solutions, driving efficiency and sustainability across industries.
-        </p>
-    </div>
+  <!-- Wrapper for full-page background -->
+    <div style="background: url('/Images/background.jpg') no-repeat center center fixed; 
+                background-size: cover; 
+                position: relative; 
+                color: #ffffff; 
+                min-height: 100vh; /* Ensures it covers the full viewport height */
+              ">
+
+        <!-- Hero Section -->
+        <div style="background-color: rgba(0, 0, 0, 0.5); padding: 60px; text-align: center;">
+            <img src="/Images/optimult_logo.png" alt="Optimult Logo" style="width: 250px; margin-bottom: 30px;">
+            <h1 style="font-size: 3em;">Welcome to Optimult</h1>
+            <p style="font-size: 1.5em; max-width: 800px; margin: auto; line-height: 1.8;">
+                Your trusted partner in delivering innovative energy solutions, driving efficiency and sustainability across industries.
+            </p>
+        </div>
 
     <!-- Footprint Section -->
-    <div style="padding: 60px; background-color: #ffffff;">
+    <div style="padding: 60px; background-color: rgba(255, 255, 255, 0.9);">
         <h2 style="color: #4CAF50; text-align: center; font-size: 2.5em;">Our Global Footprint</h2>
         <p style="text-align: center; color: #666; max-width: 800px; margin: auto; font-size: 1.2em; line-height: 1.8;">
             Optimult has established a significant presence worldwide, delivering reliable and sustainable energy solutions across various regions. Our footprint extends to key locations, supporting our partners with cutting-edge technology and expertise.
@@ -22,7 +30,7 @@
     </div>
 
     <!-- What We Bring Section -->
-    <div style="padding: 60px; background-color: #e8f5e9;">
+    <div style="padding: 60px; background-color: rgba(232, 245, 233, 0.9);">
         <h2 style="color: #4CAF50; text-align: center; font-size: 2.5em;">What We Bring</h2>
         <p style="text-align: center; color: #666; max-width: 800px; margin: auto; font-size: 1.2em; line-height: 1.8;">
             Our expertise spans from strategic project planning to full-scale implementation, ensuring our partners achieve peak efficiency and sustainability.

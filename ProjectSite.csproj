@@ -261,6 +261,7 @@
     <Content Include="Global.asax" />
     <Content Include="Account\Web.config" />
     <Content Include="Images\account_icon.jpg" />
+    <Content Include="Images\background.jpg" />
     <Content Include="Images\brayfoil_turbine.jpg" />
     <Content Include="Images\capability1.jpg" />
     <Content Include="Images\capability2.jpg" />
