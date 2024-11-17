@@ -286,7 +286,6 @@
     <Content Include="Restricted\Manager_Reports.aspx" />
     <Content Include="Restricted\ProjectSelect.aspx" />
     <Content Include="Restricted\RecordExpense.aspx" />
-    <Content Include="Restricted\RecordTimesheet.aspx" />
     <Content Include="Restricted\RecordTravel.aspx" />
     <Content Include="Restricted\UpdateDisbursements.aspx" />
     <Content Include="Restricted\Web.config" />
@@ -580,13 +579,6 @@
     </Compile>
     <Compile Include="Restricted\RecordExpense.aspx.designer.cs">
       <DependentUpon>RecordExpense.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Restricted\RecordTimesheet.aspx.cs">
-      <DependentUpon>RecordTimesheet.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Restricted\RecordTimesheet.aspx.designer.cs">
-      <DependentUpon>RecordTimesheet.aspx</DependentUpon>
     </Compile>
     <Compile Include="Restricted\RecordTravel.aspx.cs">
       <DependentUpon>RecordTravel.aspx</DependentUpon>

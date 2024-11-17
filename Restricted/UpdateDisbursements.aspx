@@ -166,43 +166,67 @@
         </br>
         </br>
         <!-- Travel Section -->
-        <asp:Panel ID="travelDetailsPanel" runat="server" CssClass="card mb-4" Visible="False" BackColor="#66FF66" BorderStyle="Groove">
-            <div class="card-header">
-                <h5 class="card-title">Travel Details</h5>
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
-                    <label for="travelDate" class="col-sm-2 col-form-label">Travel Date</label>
-                    <div class="col-sm-10">
-                        <asp:TextBox ID="txtTravelDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="mileage" class="col-sm-2 col-form-label">Mileage</label>
-                    <div class="col-sm-10">
-                        <asp:TextBox ID="txtMileage" runat="server" CssClass="form-control" placeholder="Enter mileage" AutoPostBack="True" OnTextChanged="txtMileage_TextChanged"></asp:TextBox>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="travelTotal" class="col-sm-2 col-form-label">Travel Total</label>
-                    <div class="col-sm-10">
-                        <asp:TextBox ID="txtTravelTotal" runat="server" CssClass="form-control" placeholder="Enter travel total" ReadOnly="True"></asp:TextBox>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="vehicleDescription" class="col-sm-2 col-form-label">Vehicle Description</label>
-                    <div class="col-sm-10">
-                        <asp:TextBox ID="txtVehicleDescription" runat="server" CssClass="form-control" placeholder="Enter vehicle description"></asp:TextBox>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="travelDescription" class="col-sm-2 col-form-label">Travel Description</label>
-                    <div class="col-sm-10">
-                        <asp:TextBox ID="txtTravelDescription" runat="server" CssClass="form-control" TextMode="MultiLine" placeholder="Enter travel description"></asp:TextBox>
-                    </div>
+       <asp:Panel ID="travelDetailsPanel" runat="server" CssClass="card mb-4" Visible="False" BackColor="#f4f8f9" BorderStyle="Solid" BorderColor="#4CAF50" BorderWidth="1px">
+    <div class="card-header bg-success text-white rounded-top">
+        <h5 class="card-title">Travel Details</h5>
+    </div>
+    <div class="card-body">
+        <!-- Travel Date -->
+        <div class="row mb-3">
+            <label for="travelDate" class="col-sm-3 col-form-label text-dark">Travel Date</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-text bg-light"><i class="bi bi-calendar"></i></div>
+                    <asp:TextBox ID="txtTravelDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                 </div>
             </div>
-        </asp:Panel>
+        </div>
+
+        <!-- Mileage -->
+        <div class="row mb-3">
+            <label for="mileage" class="col-sm-3 col-form-label text-dark">Mileage</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-text bg-light"><i class="bi bi-car"></i></div>
+                    <asp:TextBox ID="txtMileage" runat="server" CssClass="form-control" placeholder="Enter mileage" AutoPostBack="True" OnTextChanged="txtMileage_TextChanged"></asp:TextBox>
+                </div>
+            </div>
+        </div>
+
+        <!-- Travel Total -->
+        <div class="row mb-3">
+            <label for="travelTotal" class="col-sm-3 col-form-label text-dark">Travel Total</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-text bg-light"><i class="bi bi-currency-dollar"></i></div>
+                    <asp:TextBox ID="txtTravelTotal" runat="server" CssClass="form-control" placeholder="Enter travel total" ReadOnly="True"></asp:TextBox>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vehicle Description -->
+        <div class="row mb-3">
+            <label for="vehicleDescription" class="col-sm-3 col-form-label text-dark">Vehicle Description</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-text bg-light"><i class="bi bi-car-front"></i></div>
+                    <asp:TextBox ID="txtVehicleDescription" runat="server" CssClass="form-control" placeholder="Enter vehicle description"></asp:TextBox>
+                </div>
+            </div>
+        </div>
+
+        <!-- Travel Description -->
+        <div class="row mb-3">
+            <label for="travelDescription" class="col-sm-3 col-form-label text-dark">Travel Description</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-text bg-light"><i class="bi bi-pencil"></i></div>
+                    <asp:TextBox ID="txtTravelDescription" runat="server" CssClass="form-control" TextMode="MultiLine" placeholder="Enter travel description"></asp:TextBox>
+                </div>
+            </div>
+        </div>
+    </div>
+</asp:Panel>
         </br>
 
         <!-- Submit Button -->
@@ -214,33 +238,47 @@
     </div>
     </br></br>
         <!-- Expense Section -->
-    <asp:Panel ID="expenseDetailsPanel" runat="server" CssClass="card mb-4" Visible="False" BackColor="#66FF66" BorderStyle="Groove">
-        <div class="card-header">
-            <h5 class="card-title">Expense Details</h5>
-        </div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <label for="expenseDate" class="col-sm-2 col-form-label">Expense Date</label>
-                <div class="col-sm-10">
+ <asp:Panel ID="expenseDetailsPanel" runat="server" CssClass="card mb-4" Visible="False" BackColor="#f4f8f9" BorderStyle="Solid" BorderColor="#4CAF50" BorderWidth="1px">
+    <div class="card-header bg-success text-white rounded-top">
+        <h5 class="card-title">Expense Details</h5>
+    </div>
+    <div class="card-body">
+        <!-- Expense Date -->
+        <div class="row mb-3">
+            <label for="expenseDate" class="col-sm-3 col-form-label text-dark">Expense Date</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-text bg-light"><i class="bi bi-calendar"></i></div>
                     <asp:TextBox ID="txtExpenseDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                 </div>
             </div>
-            <div class="row mb-3">
-                <label for="expenseAmount" class="col-sm-2 col-form-label">Expense Amount</label>
-                <div class="col-sm-10">
+        </div>
+
+        <!-- Expense Amount -->
+        <div class="row mb-3">
+            <label for="expenseAmount" class="col-sm-3 col-form-label text-dark">Expense Amount</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-text bg-light"><i class="bi bi-currency-dollar"></i></div>
                     <asp:TextBox ID="txtExpenseAmount" runat="server" CssClass="form-control" placeholder="Enter expense amount"></asp:TextBox>
                 </div>
             </div>
-            <div class="row mb-3">
-                <label for="expenseType" class="col-sm-2 col-form-label">Expense Type</label>
-                <div class="col-sm-10">
+        </div>
+
+        <!-- Expense Type -->
+        <div class="row mb-3">
+            <label for="expenseType" class="col-sm-3 col-form-label text-dark">Expense Type</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <div class="input-group-text bg-light"><i class="bi bi-wallet"></i></div>
                     <asp:DropDownList ID="ddlExpenseType" runat="server" CssClass="form-select" DataSourceID="sqlDSFillExpenseType" DataTextField="Expense_Name" DataValueField="Expense_Type_ID">
                         <asp:ListItem Text="Select Expense Type" Value="" />
                     </asp:DropDownList>
                 </div>
             </div>
         </div>
-    </asp:Panel>
+    </div>
+</asp:Panel>
     </br>
                     <asp:SqlDataSource ID="sqlDSUpdateTravel" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" DeleteCommand="DELETE FROM [Traveltbl] WHERE [Travel_ID] = @original_Travel_ID AND [Disbursement_Claim_ID] = @original_Disbursement_Claim_ID AND (([Assignment_ID] = @original_Assignment_ID) OR ([Assignment_ID] IS NULL AND @original_Assignment_ID IS NULL)) AND (([Travel_Description] = @original_Travel_Description) OR ([Travel_Description] IS NULL AND @original_Travel_Description IS NULL)) AND (([Travel_Date] = @original_Travel_Date) OR ([Travel_Date] IS NULL AND @original_Travel_Date IS NULL)) AND (([Travel_Mileage] = @original_Travel_Mileage) OR ([Travel_Mileage] IS NULL AND @original_Travel_Mileage IS NULL)) AND (([Travel_Vehicle_Description] = @original_Travel_Vehicle_Description) OR ([Travel_Vehicle_Description] IS NULL AND @original_Travel_Vehicle_Description IS NULL)) AND (([Travel_Total] = @original_Travel_Total) OR ([Travel_Total] IS NULL AND @original_Travel_Total IS NULL)) AND (([Travel_Proof] = @original_Travel_Proof) OR ([Travel_Proof] IS NULL AND @original_Travel_Proof IS NULL))" InsertCommand="INSERT INTO [Traveltbl] ([Disbursement_Claim_ID], [Assignment_ID], [Travel_Description], [Travel_Date], [Travel_Mileage], [Travel_Vehicle_Description], [Travel_Total], [Travel_Proof]) VALUES (@Disbursement_Claim_ID, @Assignment_ID, @Travel_Description, @Travel_Date, @Travel_Mileage, @Travel_Vehicle_Description, @Travel_Total, @Travel_Proof)" OldValuesParameterFormatString="original_{0}" SelectCommand="SELECT * FROM [Traveltbl]" UpdateCommand="UPDATE Traveltbl SET Travel_Description = @Travel_Description, Travel_Date = @Travel_Date, Travel_Mileage = @Travel_Mileage, Travel_Vehicle_Description = @Travel_Vehicle_Description, Travel_Total = @Travel_Total WHERE (Travel_ID = @travelID)">
                         <DeleteParameters>
