@@ -493,8 +493,8 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
         {
             if (validExpenseEntries())
             {
-                double assignment_balance = (double)Session["assignment_balance"];
-                double total_expense = Convert.ToDouble(txtTravelTotal.Text);
+                decimal assignment_balance = (decimal)Session["assignment_balance"];
+                decimal total_expense = Convert.ToDecimal(txtTravelTotal.Text);
                 if (assignment_balance > total_expense)
                 {
                     try
