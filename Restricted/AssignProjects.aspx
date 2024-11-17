@@ -44,6 +44,13 @@
                     CssClass="text-danger" ErrorMessage="Project selection is required." />
             </div>
         </div>
+           <div class="form-group">
+            <asp:Label runat="server" CssClass="col-md-2 control-label">Search Projects</asp:Label>
+            <div class="col-md-10">
+                <asp:TextBox runat="server" ID="ProjectSearchBox" CssClass="form-control" 
+                    placeholder="Search by name or description" AutoPostBack="true" OnTextChanged="ProjectSearchBox_TextChanged" />
+            </div>
+        </div>
 
         <!-- Project Details GridView -->
         <div class="form-group">
@@ -53,9 +60,18 @@
                     <asp:BoundField DataField="Project_Start_date" HeaderText="Start Date" DataFormatString="{0:yyyy-MM-dd}" />
                     <asp:BoundField DataField="Project_End_date" HeaderText="End Date" DataFormatString="{0:yyyy-MM-dd}" />
                     <asp:BoundField DataField="Project_Description" HeaderText="Description" />
-                    <asp:BoundField DataField="Project_Budget" HeaderText="Budget" DataFormatString="${0}" />
+                    <asp:BoundField DataField="Project_Budget" HeaderText="Budget" DataFormatString="R{0:N2}" />
+                    
                 </Columns>
+                  
+
             </asp:GridView>
+            
+        </div>
+
+           <!-- Remaining Budget Display -->
+        <div class="form-group">
+            <asp:Label ID="Label2" runat="server" CssClass="text-success" Font-Size="Large" />
         </div>
 
         <!-- Date Assigned -->
@@ -78,7 +94,7 @@
             </div>
         </div>
 
-     
+     <asp:Label ID="RemainingBudgetLabel" runat="server" CssClass="text-success" />
 
         <!-- Submit Button -->
         <div class="form-group">

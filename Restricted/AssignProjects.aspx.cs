@@ -77,6 +77,36 @@ namespace ProjectSite.Restricted
             }
         }
 
+        protected void ProjectSearchBox_TextChanged(object sender, EventArgs e)
+        {
+            string searchTerm = ProjectSearchBox.Text.Trim();
+            string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+            string query = "SELECT Project_ID, Project_Name FROM Projecttbl WHERE Project_Name LIKE @SearchTerm OR Project_Description LIKE @SearchTerm";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
+
+                    try
+                    {
+                        conn.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        ProjectID.DataSource = reader;
+                        ProjectID.DataValueField = "Project_ID";
+                        ProjectID.DataTextField = "Project_Name";
+                        ProjectID.DataBind();
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorMessage.Text = "Error searching projects: " + ex.Message;
+                    }
+                }
+            }
+            ProjectID.Items.Insert(0, new ListItem("--Select Project--", ""));
+        }
+
         private void LoadEmployees()
         {
             string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
@@ -180,21 +210,37 @@ namespace ProjectSite.Restricted
         private void DisplayProjectDetails(string projectId)
         {
             string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
-            string query = "SELECT Project_Name, Project_Start_date, Project_End_date, Project_Description, Project_Budget FROM Projecttbl WHERE Project_ID = @ProjectID";
+            string query = "SELECT Project_Name, Project_Start_date, Project_End_date, Project_Description, Project_Budget, " +
+                           "(SELECT ISNULL(SUM(Assignment_Claim_Balance), 0) FROM ProjectAssignmenttbl WHERE Project_ID = @ProjectID) AS TotalClaims " +
+                           "FROM Projecttbl WHERE Project_ID = @ProjectID";
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@ProjectID", projectId);
+
                     try
                     {
                         conn.Open();
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
                         da.Fill(dt);
+
+                        // Bind project details to Grid
                         ProjectDetailsGrid.DataSource = dt;
                         ProjectDetailsGrid.DataBind();
+
+                        // Calculate and display remaining budget
+                        if (dt.Rows.Count > 0)
+                        {
+                            decimal projectBudget = Convert.ToDecimal(dt.Rows[0]["Project_Budget"]);
+                            decimal totalClaims = Convert.ToDecimal(dt.Rows[0]["TotalClaims"]);
+                            decimal remainingBudget = projectBudget - totalClaims;
+
+                            // Display remaining budget
+                            RemainingBudgetLabel.Text = "Remaining Budget: " + remainingBudget.ToString("C");
+                        }
                     }
                     catch (Exception ex)
                     {

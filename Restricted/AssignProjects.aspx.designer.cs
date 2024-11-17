@@ -51,6 +51,15 @@ namespace ProjectSite.Restricted
         protected global::System.Web.UI.WebControls.DropDownList ProjectID;
 
         /// <summary>
+        /// ProjectSearchBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ProjectSearchBox;
+
+        /// <summary>
         /// ProjectDetailsGrid control.
         /// </summary>
         /// <remarks>
@@ -58,6 +67,15 @@ namespace ProjectSite.Restricted
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView ProjectDetailsGrid;
+
+        /// <summary>
+        /// Label2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
         /// DateAssigned control.
@@ -76,5 +94,14 @@ namespace ProjectSite.Restricted
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox AssignmentClaimMax;
+
+        /// <summary>
+        /// RemainingBudgetLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label RemainingBudgetLabel;
     }
 }
