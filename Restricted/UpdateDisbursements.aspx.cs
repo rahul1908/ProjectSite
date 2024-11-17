@@ -82,9 +82,9 @@ namespace ProjectSite.Restricted
             //LoadProjects("Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd");
         }
 
-        private double GetClientRate(int assignmentID)
+        private decimal GetClientRate(int assignmentID)
         {
-            double clientrate;
+            decimal clientrate;
             string connectionstring = "Data Source=146.230.177.46;Initial Catalog=G8Wst2024;User ID=G8Wst2024;password=09ujd";
             string query = @"SELECT clienttbl.Client_Rates 
 FROM Clienttbl INNER JOIN
@@ -100,7 +100,7 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
                     Cmd.Parameters["@assignmentID"].Value = assignmentID;
                     connection.Open();
                     object result = Cmd.ExecuteScalar();
-                    clientrate = Convert.ToDouble(result);
+                    clientrate = Convert.ToDecimal(result);
                 }
             }
 
@@ -144,18 +144,20 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
         }
         protected void txtMileage_TextChanged(object sender, EventArgs e)
         {
-            // Example: Calculate the travel total based on mileage (assuming a fixed rate per mile).
-            double mileage;
-            if (double.TryParse(txtMileage.Text, out mileage))
-            {
-                int assignment_id = Convert.ToInt32(Session["assignment_id"].ToString());
-                double ratePerMile = GetClientRate(assignment_id); // Example rate, adjust as needed
-                double travelTotal = mileage * ratePerMile;
-                txtTravelTotal.Text = travelTotal.ToString();
+            if (!string.IsNullOrWhiteSpace(txtMileage.Text) && decimal.TryParse(txtMileage.Text, out decimal mileage)){
+                // Example: Calculate the travel total based on mileage (assuming a fixed rate per mile).
+               // double mileage;
+              
+                    int assignment_id = Convert.ToInt32(Session["assignment_id"].ToString());
+                    decimal ratePerMile = GetClientRate(assignment_id); // Example rate, adjust as needed
+                    decimal travelTotal = mileage * ratePerMile;
+                    txtTravelTotal.Text = travelTotal.ToString();
             }
             else
             {
-                txtTravelTotal.Text = "0.00";
+                ShowAlert("Mileage has to be a valid numeric value");
+                txtMileage.Text = gvSelectTravel.SelectedRow.Cells[6].Text;
+                txtTravelTotal.Text = gvSelectTravel.SelectedRow.Cells[8].Text;
             }
             
 
@@ -389,6 +391,20 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             // Set the expense amount
             txtExpenseAmount.Text = gvSelectExpense.SelectedRow.Cells[5].Text;
 
+            // set expense type
+            // Get the value from column 4 of the selected row (Expense Type ID or Name).
+            string expenseTypeValue = gvSelectExpense.SelectedRow.Cells[4].Text;
+
+            // Set the selected value of ddlExpenseType to match the value from the GridView.
+            if (ddlExpenseType.Items.FindByText(expenseTypeValue) != null)
+            {
+                ddlExpenseType.SelectedValue = ddlExpenseType.Items.FindByText(expenseTypeValue).Value;
+            }
+            else if (ddlExpenseType.Items.FindByValue(expenseTypeValue) != null)
+            {
+                ddlExpenseType.SelectedValue = expenseTypeValue;
+            }
+
             // Get the selected row
             GridViewRow row = gvSelectExpense.SelectedRow;
 
@@ -424,80 +440,226 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
 
         protected void btnUpdateTravel_Click(object sender, EventArgs e)
         {
-            decimal assignment_balance = (decimal)Session["assignment_balance"];
-            decimal total_travel = Convert.ToDecimal(txtTravelTotal.Text);
-            if (assignment_balance > total_travel)
+            if (validTravelEntries())
             {
-                try
+                decimal assignment_balance = (decimal)Session["assignment_balance"];
+                decimal total_travel = Convert.ToDecimal(txtTravelTotal.Text);
+                if (assignment_balance > total_travel)
                 {
-                    // Execute the update command
-                    sqlDSUpdateTravel.Update();
-                    sqlDSUpdateDisbursementValues.Update();
-                    sqlDSUpdateAssignmentValues.Update();
+                    try
+                    {
+                        // Execute the update command
+                        sqlDSUpdateTravel.Update();
+                        sqlDSUpdateDisbursementValues.Update();
+                        sqlDSUpdateAssignmentValues.Update();
+                        assignmentBalance();
 
-                    // Display a success message
-                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
+                        // Display a success message
+                        ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
 
-                    // Rebind the GridView to reflect the updated data
-                    gvSelectTravel.DataSourceID = "sqlDSSelectTravel";
-                    gvSelectTravel.DataBind();
+                        // Rebind the GridView to reflect the updated data
+                        gvSelectTravel.DataSourceID = "sqlDSSelectTravel";
+                        gvSelectTravel.DataBind();
 
-                    // rebind disbursement table
-                    gvDisbursements.DataSourceID = "sqlDSDisplayDisbursements";
-                    gvDisbursements.DataBind();
+                        // rebind disbursement table
+                        gvDisbursements.DataSourceID = "sqlDSDisplayDisbursements";
+                        gvDisbursements.DataBind();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle any errors and display a message
+                        ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    // Handle any errors and display a message
-                    ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Insufficient balance for this update');", true);
+                    txtMileage.Text = "";
+                    txtTravelTotal.Text = "";
                 }
-            }
-            else
-            { 
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Insufficient balance for this update');", true);
-                txtMileage.Text = "";
-                txtTravelTotal.Text = "";
             }
         }
 
 
         protected void btnUpdateExpense_Click(object sender, EventArgs e)
         {
-            double assignment_balance = (double)Session["assignment_balance"];
-            double total_expense = Convert.ToDouble(txtTravelTotal.Text);
-            if (assignment_balance > total_expense)
+            if (validExpenseEntries())
             {
-                try
+                double assignment_balance = (double)Session["assignment_balance"];
+                double total_expense = Convert.ToDouble(txtTravelTotal.Text);
+                if (assignment_balance > total_expense)
                 {
-                    // Execute the update command
-                    sqlDSUpdateExpense.Update();
-                    sqlDSUpdateDisbursementValues.Update();
-                    sqlDSUpdateAssignmentValues.Update();
+                    try
+                    {
+                        // Execute the update command
+                        sqlDSUpdateExpense.Update();
+                        sqlDSUpdateDisbursementValues.Update();
+                        sqlDSUpdateAssignmentValues.Update();
+                        assignmentBalance();
+                        // Display a success message
+                        ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
 
-                    // Display a success message
-                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Update Successful');", true);
+                        // Rebind the GridView to reflect the updated data
+                        gvSelectExpense.DataSourceID = "sqlDSSelectExpense";
+                        gvSelectExpense.DataBind();
 
-                    // Rebind the GridView to reflect the updated data
-                    gvSelectExpense.DataSourceID = "sqlDSSelectExpense";
-                    gvSelectExpense.DataBind();
-
-                    // rebind disbursement table
-                    gvDisbursements.DataSourceID = "sqlDSDisplayDisbursements";
-                    gvDisbursements.DataBind();
+                        // rebind disbursement table
+                        gvDisbursements.DataSourceID = "sqlDSDisplayDisbursements";
+                        gvDisbursements.DataBind();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle any errors and display a failure message
+                        ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    // Handle any errors and display a failure message
-                    ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Update Failed: {ex.Message}');", true);
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Insufficient balance for this update');", true);
+                    txtMileage.Text = "";
+                    txtTravelTotal.Text = "";
                 }
-            }
-            else
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Insufficient balance for this update');", true);
-                txtMileage.Text = "";
-                txtTravelTotal.Text = "";
             }
         }
 
+        //validation
+        private bool validTravelEntries()
+        {
+            // Validate travel date
+            DateTime travelDate;
+            if (!DateTime.TryParse(txtTravelDate.Text, out travelDate))
+            {
+                // Invalid date format
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please enter a valid travel date.');", true);
+                resetTravelDate();
+                return false;
+            }
+
+            // Check if the date is in the future or more than 7 days in the past
+            DateTime currentDate = DateTime.Now;
+            if (travelDate > currentDate)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel date cannot be in the future.');", true);
+                resetTravelDate();
+                return false;
+            }
+            if ((currentDate - travelDate).TotalDays > 7)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel date cannot be more than 7 days earlier than today.');", true);
+                resetTravelDate();
+                return false;
+            }
+
+            // Validate mileage
+            if (string.IsNullOrWhiteSpace(txtMileage.Text) || !decimal.TryParse(txtMileage.Text, out decimal mileage))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Please enter a valid numeric mileage.');", true);
+                txtMileage.Text = gvSelectTravel.SelectedRow.Cells[6].Text;
+                txtTravelTotal.Text = gvSelectTravel.SelectedRow.Cells[8].Text;
+                return false;
+            }
+
+            // Validate vehicle description
+            if (string.IsNullOrWhiteSpace(txtVehicleDescription.Text))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Vehicle description cannot be empty.');", true);
+                txtVehicleDescription.Text = gvSelectTravel.SelectedRow.Cells[4].Text;
+                return false;
+            }
+
+            // Validate travel description
+            if (string.IsNullOrWhiteSpace(txtTravelDescription.Text))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel description cannot be empty.');", true);
+                txtTravelDescription.Text = gvSelectTravel.SelectedRow.Cells[7].Text;
+                return false;
+            }
+
+            // If all validations pass, return true
+            return true;         
+           
+
+        }
+
+
+        private bool validExpenseEntries()
+        {
+            // Validate expense date
+            DateTime expenseDate;
+            if (!DateTime.TryParse(txtExpenseDate.Text, out expenseDate))
+            {
+                ShowAlert("Please enter a valid expense date.");
+                resetExpenseDate();
+                return false;
+            }
+
+            // Check if the date is in the future or more than 7 days in the past
+            DateTime currentDate = DateTime.Now;
+            if (expenseDate > currentDate)
+            {
+                ShowAlert("Expense date cannot be in the future.");
+                resetExpenseDate();
+                return false;
+            }
+            if ((currentDate - expenseDate).TotalDays > 7)
+            {
+                ShowAlert("Expense date cannot be more than 7 days earlier than today.");
+                resetExpenseDate();
+                return false;
+            }
+
+            // Validate expense amount
+            if (string.IsNullOrWhiteSpace(txtExpenseAmount.Text) || !decimal.TryParse(txtExpenseAmount.Text, out decimal expenseAmount))
+            {
+                ShowAlert("Please enter a valid numeric expense amount.");
+                txtExpenseAmount.Text = gvSelectExpense.SelectedRow.Cells[5].Text;
+                return false;
+            }
+
+            // If all validations pass, return true
+            return true;
+        }
+
+        private void ShowAlert(string message)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('{message}');", true);
+        }
+
+        private void resetTravelDate()
+        {
+            // Safely retrieve and parse the date
+            DateTime travelDate;
+            string dateText = gvSelectTravel.SelectedRow.Cells[5].Text;
+
+            if (DateTime.TryParse(dateText, out travelDate))
+            {
+                // Format the date as 'yyyy-MM-dd' for TextMode="Date"
+                txtTravelDate.Text = travelDate.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                // Handle invalid date format
+                txtTravelDate.Text = "";
+            }
+        }
+
+        private void resetExpenseDate()
+        {
+            // Safely retrieve and parse the date from the selected row
+            DateTime expenseDate;
+            string dateText = gvSelectExpense.SelectedRow.Cells[6].Text;
+
+            if (DateTime.TryParse(dateText, out expenseDate))
+            {
+                // Set the date in the correct format for TextMode="Date"
+                txtExpenseDate.Text = expenseDate.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                // Handle invalid date format
+                txtExpenseDate.Text = "";
+            }
+        }
     }
+
 }

@@ -82,7 +82,7 @@
                 <asp:ControlParameter ControlID="gvDisbursements" Name="claimID" PropertyName="SelectedValue" />
             </SelectParameters>
         </asp:SqlDataSource>
-        <asp:SqlDataSource ID="sqlDSSelectExpense" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" SelectCommand="SELECT Expense_ID, Disbursement_Claim_ID, Assignment_ID, Expense_Type_ID, Expense_Total, Expense_Date, Expense_Proof FROM Expensetbl WHERE (Disbursement_Claim_ID = @claimID)">
+        <asp:SqlDataSource ID="sqlDSSelectExpense" runat="server" ConnectionString="<%$ ConnectionStrings:G8Wst2024ConnectionString2 %>" SelectCommand="SELECT Expensetbl.Expense_ID, Expensetbl.Disbursement_Claim_ID, Expensetbl.Assignment_ID, ExpenseTypetbl.Expense_Name, Expensetbl.Expense_Total, Expensetbl.Expense_Date, Expensetbl.Expense_Proof FROM Expensetbl INNER JOIN ExpenseTypetbl ON Expensetbl.Expense_Type_ID = ExpenseTypetbl.Expense_Type_ID WHERE (Expensetbl.Disbursement_Claim_ID = @claimID)">
             <SelectParameters>
                 <asp:ControlParameter ControlID="gvDisbursements" Name="claimID" PropertyName="SelectedValue" />
             </SelectParameters>
@@ -137,7 +137,7 @@
                 <asp:BoundField DataField="Expense_ID" HeaderText="Expense_ID" InsertVisible="False" ReadOnly="True" SortExpression="Expense_ID"></asp:BoundField>
                 <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Claim_ID" SortExpression="Disbursement_Claim_ID"></asp:BoundField>
                 <asp:BoundField DataField="Assignment_ID" HeaderText="Assignment_ID" SortExpression="Assignment_ID"></asp:BoundField>
-                <asp:BoundField DataField="Expense_Type_ID" HeaderText="Expense_Type_ID" SortExpression="Expense_Type_ID"></asp:BoundField>
+                <asp:BoundField DataField="Expense_Name" HeaderText="Expense_Name" SortExpression="Expense_Name"></asp:BoundField>
                 <asp:BoundField DataField="Expense_Total" HeaderText="Total" SortExpression="Expense_Total"></asp:BoundField>
                 <asp:BoundField DataField="Expense_Date" HeaderText="Date" SortExpression="Expense_Date"></asp:BoundField>
                 <asp:CheckBoxField DataField="Expense_Proof" HeaderText="Proof" SortExpression="Expense_Proof" />
