@@ -462,6 +462,73 @@ WHERE
             pdfDoc.Add(travelTable);
             pdfDoc.Add(new Paragraph(" "));
         }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            string projectName = txtSearchProject.Text.Trim();
+
+            if (!string.IsNullOrEmpty(projectName))
+            {
+                // Search for claims by project name
+                SearchClaimsByProject(projectName);
+            }
+            else
+            {
+                // Reload all claims if search text is empty
+                int employeeId = Convert.ToInt32(Session["employee_id"]);
+                LoadClaims(employeeId);
+            }
+        }
+
+        private void SearchClaimsByProject(string projectName)
+        {
+            string connectionString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
+
+            // SQL query to filter claims by project name
+            string query = @"SELECT 
+                        dc.Disbursement_Claim_ID,
+                        pa.Assignment_ID,
+                        dc.Disbursement_Travel_Total,
+                        dc.Disbursement_Expense_Total,
+                        dc.Disbursement_Total_Claim,
+                        dc.Disbursement_Date,
+                        dc.Manager_ID,
+                        dc.Disbursement_Approved,
+                        p.Project_Name
+                     FROM 
+                        DisbursementClaimtbl dc
+                     INNER JOIN 
+                        ProjectAssignmenttbl pa ON dc.Assignment_ID = pa.Assignment_ID
+                     INNER JOIN 
+                        Projecttbl p ON pa.Project_ID = p.Project_ID
+                     WHERE 
+                        p.Project_Name LIKE @ProjectName";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ProjectName", "%" + projectName + "%");
+
+                    try
+                    {
+                        connection.Open();
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable claimsTable = new DataTable();
+                        adapter.Fill(claimsTable);
+
+                        // Bind the filtered data to the GridView
+                        ClaimsGridView.DataSource = claimsTable;
+                        ClaimsGridView.DataBind();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the exception or show an error message
+                        Console.WriteLine("Error searching claims: " + ex.Message);
+                    }
+                }
+            }
+        }
     }
 }
 

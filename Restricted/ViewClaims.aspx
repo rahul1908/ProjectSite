@@ -3,21 +3,51 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>View Disbursement Claims</h2>
-    
+
+    <!-- Search bar for filtering claims by project name -->
+
+    <asp:Panel runat="server" CssClass="search-panel">
+    <asp:Label ID="lblSearch" runat="server" Text="Search by Project Name:" CssClass="search-label"></asp:Label>
+    <asp:TextBox ID="txtSearchProject" runat="server" CssClass="search-box"></asp:TextBox>
+    <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="search-button" OnClick="btnSearch_Click" />
+</asp:Panel>
+
+<style>
+    .search-panel {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .search-label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .search-box {
+        padding: 5px;
+        width: 200px;
+    }
+    .search-button {
+        padding: 5px 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
     <asp:Panel runat="server" CssClass="claims-panel">
         <asp:GridView ID="ClaimsGridView" runat="server" AutoGenerateColumns="False" CssClass="claims-grid"
                       HeaderStyle-CssClass="header-style" RowStyle-CssClass="row-style" 
-                      AlternatingRowStyle-CssClass="alt-row-style"  
+                      AlternatingRowStyle-CssClass="alt-row-style"
                       OnRowCommand="ClaimsGridView_RowCommand">
             <Columns>
-                 <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Claim ID" />
-        <asp:BoundField DataField="Project_Name" HeaderText="Project Name" /> 
-        <asp:BoundField DataField="Disbursement_Travel_Total" HeaderText="Travel Total" DataFormatString="{0:C}" />
-        <asp:BoundField DataField="Disbursement_Expense_Total" HeaderText="Expense Total" DataFormatString="{0:C}" />
-        <asp:BoundField DataField="Disbursement_Total_Claim" HeaderText="Total Claim" DataFormatString="{0:C}" />
-        <asp:BoundField DataField="Disbursement_Date" HeaderText="Date" DataFormatString="{0:MM/dd/yyyy}" />
-        <asp:BoundField DataField="Manager_ID" HeaderText="Manager ID" />
-        <asp:BoundField DataField="Disbursement_Approved" HeaderText="Approved Status" />
+                <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Claim ID" />
+                <asp:BoundField DataField="Project_Name" HeaderText="Project Name" />
+                <asp:BoundField DataField="Disbursement_Travel_Total" HeaderText="Travel Total" DataFormatString="{0:C}" />
+                <asp:BoundField DataField="Disbursement_Expense_Total" HeaderText="Expense Total" DataFormatString="{0:C}" />
+                <asp:BoundField DataField="Disbursement_Total_Claim" HeaderText="Total Claim" DataFormatString="{0:C}" />
+                <asp:BoundField DataField="Disbursement_Date" HeaderText="Date" DataFormatString="{0:MM/dd/yyyy}" />
+                <asp:BoundField DataField="Manager_ID" HeaderText="Manager ID" />
+                <asp:BoundField DataField="Disbursement_Approved" HeaderText="Approved Status" />
                 <asp:CommandField ShowSelectButton="True" ButtonType="Button" SelectText="View Details" />
             </Columns>
         </asp:GridView>
@@ -29,11 +59,11 @@
                       HeaderStyle-CssClass="header-style" RowStyle-CssClass="row-style" 
                       AlternatingRowStyle-CssClass="alt-row-style">
             <Columns>
-                        <asp:BoundField DataField="Expense_ID" HeaderText="Expense ID" />
-        <asp:BoundField DataField="Expense_Name" HeaderText="Expense Name" />
-        <asp:BoundField DataField="Expense_Total" HeaderText="Expense Total" DataFormatString="{0:C}" />
-        <asp:BoundField DataField="Expense_Date" HeaderText="Expense Date" DataFormatString="{0:MM/dd/yyyy}" />
-        <asp:BoundField DataField="Expense_Proof" HeaderText="Expense Proof" />
+                <asp:BoundField DataField="Expense_ID" HeaderText="Expense ID" />
+                <asp:BoundField DataField="Expense_Name" HeaderText="Expense Name" />
+                <asp:BoundField DataField="Expense_Total" HeaderText="Expense Total" DataFormatString="{0:C}" />
+                <asp:BoundField DataField="Expense_Date" HeaderText="Expense Date" DataFormatString="{0:MM/dd/yyyy}" />
+                <asp:BoundField DataField="Expense_Proof" HeaderText="Expense Proof" />
             </Columns>
         </asp:GridView>
     </asp:Panel>
@@ -44,23 +74,27 @@
                       HeaderStyle-CssClass="header-style" RowStyle-CssClass="row-style" 
                       AlternatingRowStyle-CssClass="alt-row-style">
             <Columns>
-              <asp:BoundField DataField="Travel_ID" HeaderText="Travel ID" />
-        <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Claim ID" />
-       
-        <asp:BoundField DataField="Travel_Description" HeaderText="Description" />
-        <asp:BoundField DataField="Travel_Date" HeaderText="Travel Date" DataFormatString="{0:MM/dd/yyyy}" />
-        <asp:BoundField DataField="Travel_Mileage" HeaderText="Mileage" />
-        <asp:BoundField DataField="Travel_Vehicle_Description" HeaderText="Vehicle Description" />
-        <asp:BoundField DataField="Travel_Total" HeaderText="Travel Total" DataFormatString="{0:C}" />
-        <asp:BoundField DataField="Travel_Proof" HeaderText="Proof" />
+                <asp:BoundField DataField="Travel_ID" HeaderText="Travel ID" />
+                <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Claim ID" />
+                <asp:BoundField DataField="Travel_Description" HeaderText="Description" />
+                <asp:BoundField DataField="Travel_Date" HeaderText="Travel Date" DataFormatString="{0:MM/dd/yyyy}" />
+                <asp:BoundField DataField="Travel_Mileage" HeaderText="Mileage" />
+                <asp:BoundField DataField="Travel_Vehicle_Description" HeaderText="Vehicle Description" />
+                <asp:BoundField DataField="Travel_Total" HeaderText="Travel Total" DataFormatString="{0:C}" />
+                <asp:BoundField DataField="Travel_Proof" HeaderText="Proof" />
             </Columns>
-           
         </asp:GridView>
-         <asp:Button ID="btnGeneratePDF" runat="server" Text="Generate PDF" CssClass="btn btn-secondary" OnClick="btnGeneratePDF_Click" />
+        <asp:Button ID="btnGeneratePDF" runat="server" Text="Generate PDF" CssClass="btn btn-secondary" OnClick="btnGeneratePDF_Click" />
     </asp:Panel>
 
     <style>
-        /* Overall page styling */
+        /* Styling for the search bar */
+        .form-control {
+            width: 300px;
+
+        }
+ 
+              /* Overall page styling */
         h2 {
             text-align: center;
             color: #2f4f4f;
@@ -98,6 +132,6 @@
             text-align: center;
             border: 1px solid #a8d5a2;
         }
-    </style>
-</asp:Content>
 
+        </style>
+</asp:Content>
