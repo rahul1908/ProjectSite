@@ -14,6 +14,17 @@ namespace ProjectSite.Restricted
         {
             if (!IsPostBack)
             {
+
+
+               
+
+                // Automatically select the first project in the dropdown list
+                if (ddlProjects.Items.Count > 0)
+                {
+                    ddlProjects.SelectedIndex = 0;  // Select the first item
+                    ddlProjects_SelectedIndexChanged(sender, e);
+                    assignmentBalance();                                              // Call the method to populate the labels
+                }
                 // Check if user is logged in
                 if (User.Identity.IsAuthenticated)
                 {

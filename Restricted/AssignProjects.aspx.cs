@@ -114,7 +114,7 @@ namespace ProjectSite.Restricted
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
-            
+
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     try
@@ -142,12 +142,12 @@ namespace ProjectSite.Restricted
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                
+
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     int manid = (int)Session["user_id"];
                     cmd.Parameters.AddWithValue("@ManagerID", manid);
-               
+
                     try
                     {
                         conn.Open();
@@ -252,6 +252,30 @@ namespace ProjectSite.Restricted
 
         protected void AssignProject_Click(object sender, EventArgs e)
         {
+            // Check if any fields are empty
+            if (string.IsNullOrWhiteSpace(EmployeeID.SelectedValue) ||
+                string.IsNullOrWhiteSpace(ProjectID.SelectedValue) ||
+                string.IsNullOrWhiteSpace(DateAssigned.Text) ||
+                string.IsNullOrWhiteSpace(AssignmentClaimMax.Text))
+            {
+                ErrorMessage.Text = "Please fill in all fields.";
+                return; // Exit the method if any field is empty
+            }
+
+            // Check if DateAssigned is in the future
+            DateTime assignedDate;
+            if (!DateTime.TryParse(DateAssigned.Text, out assignedDate))
+            {
+                ErrorMessage.Text = "Invalid date format.";
+                return; // Exit the method if the date format is incorrect
+            }
+
+            if (assignedDate > DateTime.Now)
+            {
+                ErrorMessage.Text = "Date assigned cannot be in the future.";
+                return; // Exit the method if the date is in the future
+            }
+
             string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
             string checkQuery = "SELECT COUNT(*) FROM ProjectAssignmenttbl WHERE Employee_ID = @EmployeeID AND Project_ID = @ProjectID";
             string insertQuery = "INSERT INTO ProjectAssignmenttbl (Employee_ID, Project_ID, Date_Assigned, Assignment_Claim_Max, Assignment_Claim_Balance) " +
@@ -280,7 +304,7 @@ namespace ProjectSite.Restricted
                                 insertCmd.Parameters.AddWithValue("@EmployeeID", EmployeeID.SelectedValue);
                                 insertCmd.Parameters.AddWithValue("@ProjectID", ProjectID.SelectedValue);
                                 insertCmd.Parameters.AddWithValue("@DateAssigned", DateAssigned.Text);
-                                insertCmd.Parameters.AddWithValue("@AssignmentClaimMax",AssignmentClaimMax.Text);
+                                insertCmd.Parameters.AddWithValue("@AssignmentClaimMax", AssignmentClaimMax.Text);
                                 insertCmd.Parameters.AddWithValue("@AssignmentClaimBalance", AssignmentClaimMax.Text);
 
                                 insertCmd.ExecuteNonQuery();
@@ -291,7 +315,6 @@ namespace ProjectSite.Restricted
                                 ProjectID.SelectedIndex = 0;
                                 DateAssigned.Text = string.Empty;
                                 AssignmentClaimMax.Text = string.Empty;
-                               
                             }
                         }
                     }
@@ -303,4 +326,4 @@ namespace ProjectSite.Restricted
             }
         }
     }
-}
+    }

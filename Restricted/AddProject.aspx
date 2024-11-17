@@ -84,15 +84,7 @@
                                 </asp:TextBox>
                             </div>
 
-                            <div class="form-group">
-                                <label for="txtManagerID">Manager ID:</label>
-                                <asp:TextBox 
-                                    ID="txtManagerID" 
-                                    runat="server" 
-                                    CssClass="form-control" 
-                                    placeholder="Enter manager ID">
-                                </asp:TextBox>
-                            </div>
+                          
 
                             <!-- Submit Button with hover effect -->
                             <div class="form-group">
@@ -112,6 +104,7 @@
 
     <!-- Optional: Add feedback messages for form submission -->
     <asp:Label ID="lblMessage" runat="server" CssClass="text-success"></asp:Label>
+    <asp:Literal ID="litErrorMessage" runat="server" ></asp:Literal>
 
     <!-- Add Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

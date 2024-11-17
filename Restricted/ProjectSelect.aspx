@@ -15,7 +15,7 @@
                     </div>
                     <div class="card-body p-4">
                         <div class="mb-3">
-                            <asp:DropDownList ID="ddlProjects" runat="server" CssClass="form-select" DataTextField="Project_Name" DataValueField="Project_ID" AutoPostBack="True" OnSelectedIndexChanged="ddlProjects_SelectedIndexChanged" DataSourceID="SqlDataSource1">
+                            <asp:DropDownList ID="ddlProjects" runat="server" CssClass="form-select" DataTextField="Project_Name" DataValueField="Project_ID" AutoPostBack="True" OnSelectedIndexChanged="ddlProjects_SelectedIndexChanged" DataSourceID="SqlDataSource1" OnPreRender="Page_Load">
                             </asp:DropDownList>
                         </div>
                         <div class="d-grid gap-2">

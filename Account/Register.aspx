@@ -60,7 +60,7 @@
 
         <!-- Client Rates -->
         <div class="form-group">
-            <asp:Label runat="server" AssociatedControlID="ClientRates" CssClass="col-md-2 control-label">Rates (Decimal)</asp:Label>
+            <asp:Label runat="server" AssociatedControlID="ClientRates" CssClass="col-md-2 control-label">Mileage Rate- (eg. R6 per KM)</asp:Label>
             <div class="col-md-10">
                 <asp:TextBox runat="server" ID="ClientRates" CssClass="form-control" TextMode="Number" />
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="ClientRates"
