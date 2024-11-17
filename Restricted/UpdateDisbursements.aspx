@@ -51,9 +51,9 @@
                 <asp:CommandField ShowSelectButton="True" />
                 <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Claim_ID" InsertVisible="False" ReadOnly="True" SortExpression="Disbursement_Claim_ID" />
                 <asp:BoundField DataField="Assignment_ID" HeaderText="Assignment_ID" SortExpression="Assignment_ID" />
-                <asp:BoundField DataField="Disbursement_Travel_Total" HeaderText="Travel_Total" SortExpression="Disbursement_Travel_Total" />
-                <asp:BoundField DataField="Disbursement_Expense_Total" HeaderText="Expense_Total" SortExpression="Disbursement_Expense_Total" />
-                <asp:BoundField DataField="Disbursement_Total_Claim" HeaderText="Total_Claim" SortExpression="Disbursement_Total_Claim" />
+                <asp:BoundField DataField="Disbursement_Travel_Total" HeaderText="Travel_Total" SortExpression="Disbursement_Travel_Total" DataFormatString="{0:C}" />
+                <asp:BoundField DataField="Disbursement_Expense_Total" HeaderText="Expense_Total" SortExpression="Disbursement_Expense_Total" DataFormatString="{0:C}" />
+                <asp:BoundField DataField="Disbursement_Total_Claim" HeaderText="Total_Claim" SortExpression="Disbursement_Total_Claim" DataFormatString="{0:C}" />
                 <asp:BoundField DataField="Disbursement_Date" HeaderText="Date" SortExpression="Disbursement_Date" />
                 <asp:BoundField DataField="Manager_ID" HeaderText="Manager_ID" SortExpression="Manager_ID" />
                 <asp:BoundField DataField="Disbursement_Approved" HeaderText="Approved_Status" SortExpression="Disbursement_Approved" />
@@ -107,7 +107,7 @@
                 <asp:BoundField DataField="Travel_Date" HeaderText="Date" SortExpression="Travel_Date"></asp:BoundField>
                 <asp:BoundField DataField="Travel_Mileage" HeaderText="Mileage" SortExpression="Travel_Mileage"></asp:BoundField>
                 <asp:BoundField DataField="Travel_Vehicle_Description" HeaderText="Vehicle_Description" SortExpression="Travel_Vehicle_Description"></asp:BoundField>
-                <asp:BoundField DataField="Travel_Total" HeaderText="Travel_Total" SortExpression="Travel_Total"></asp:BoundField>
+                <asp:BoundField DataField="Travel_Total" HeaderText="Travel_Total" SortExpression="Travel_Total" DataFormatString="{0:C}"></asp:BoundField>
                 <asp:CheckBoxField DataField="Travel_Proof" HeaderText="Proof" SortExpression="Travel_Proof" />
             </Columns>
             <EditRowStyle BackColor="#7C6F57" />
@@ -134,11 +134,21 @@
             <AlternatingRowStyle BackColor="White" />
             <Columns>
                 <asp:CommandField ShowSelectButton="True" />
-                <asp:BoundField DataField="Expense_ID" HeaderText="Expense_ID" InsertVisible="False" ReadOnly="True" SortExpression="Expense_ID"></asp:BoundField>
-                <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Claim_ID" SortExpression="Disbursement_Claim_ID"></asp:BoundField>
-                <asp:BoundField DataField="Assignment_ID" HeaderText="Assignment_ID" SortExpression="Assignment_ID"></asp:BoundField>
-                <asp:BoundField DataField="Expense_Name" HeaderText="Expense_Name" SortExpression="Expense_Name"></asp:BoundField>
-                <asp:BoundField DataField="Expense_Total" HeaderText="Total" SortExpression="Expense_Total"></asp:BoundField>
+                <asp:BoundField DataField="Expense_ID" HeaderText="Expense_ID" InsertVisible="False" ReadOnly="True" SortExpression="Expense_ID">
+                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" />
+                </asp:BoundField>
+                <asp:BoundField DataField="Disbursement_Claim_ID" HeaderText="Claim_ID" SortExpression="Disbursement_Claim_ID">
+                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" />
+                </asp:BoundField>
+                <asp:BoundField DataField="Assignment_ID" HeaderText="Assignment_ID" SortExpression="Assignment_ID">
+                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" />
+                </asp:BoundField>
+                <asp:BoundField DataField="Expense_Name" HeaderText="Expense_Name" SortExpression="Expense_Name">
+                <ItemStyle HorizontalAlign="Left" VerticalAlign="Middle" />
+                </asp:BoundField>
+                <asp:BoundField DataField="Expense_Total" HeaderText="Total" SortExpression="Expense_Total" DataFormatString="{0:C}">
+                <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" />
+                </asp:BoundField>
                 <asp:BoundField DataField="Expense_Date" HeaderText="Date" SortExpression="Expense_Date"></asp:BoundField>
                 <asp:CheckBoxField DataField="Expense_Proof" HeaderText="Proof" SortExpression="Expense_Proof" />
             </Columns>
