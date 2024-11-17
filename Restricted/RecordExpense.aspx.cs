@@ -390,6 +390,13 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
                 return false;
             }
 
+            // Check if the travel date is within the current month
+            if (travelDate.Month != currentDate.Month || travelDate.Year != currentDate.Year)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel date must be within the current month.');", true);
+                return false;
+            }
+
             // Validate mileage
             if (string.IsNullOrWhiteSpace(txtMileage.Text) || !decimal.TryParse(txtMileage.Text, out decimal mileage))
             {
@@ -416,6 +423,7 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
         }
 
 
+
         private bool validExpenseEntries()
         {
             // Validate expense date
@@ -439,6 +447,13 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
                 return false;
             }
 
+            // Check if the expense date is within the current month
+            if (expenseDate.Month != currentDate.Month || expenseDate.Year != currentDate.Year)
+            {
+                ShowAlert("Expense date must be within the current month.");
+                return false;
+            }
+
             // Validate expense amount
             if (string.IsNullOrWhiteSpace(txtExpenseAmount.Text) || !decimal.TryParse(txtExpenseAmount.Text, out decimal expenseAmount))
             {
@@ -449,6 +464,7 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             // If all validations pass, return true
             return true;
         }
+
 
         private void ShowAlert(string message)
         {

@@ -396,13 +396,21 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             string expenseTypeValue = gvSelectExpense.SelectedRow.Cells[4].Text;
 
             // Set the selected value of ddlExpenseType to match the value from the GridView.
-            if (ddlExpenseType.Items.FindByText(expenseTypeValue) != null)
+            // Get the name of the Expense Type from the selected row in the GridView (column index may vary).
+            string selectedExpenseName = gvSelectExpense.SelectedRow.Cells[4].Text.Trim();
+
+            // Find the ListItem in the DropDownList using the displayed text (Expense_Name).
+            ListItem selectedItem = ddlExpenseType.Items.FindByText(selectedExpenseName);
+
+            if (selectedItem != null)
             {
-                ddlExpenseType.SelectedValue = ddlExpenseType.Items.FindByText(expenseTypeValue).Value;
+                // Set the selected item in the DropDownList based on the matched text.
+                ddlExpenseType.SelectedValue = selectedItem.Value;
             }
-            else if (ddlExpenseType.Items.FindByValue(expenseTypeValue) != null)
+            else
             {
-                ddlExpenseType.SelectedValue = expenseTypeValue;
+                // Optionally, clear the selection if no match is found.
+                ddlExpenseType.ClearSelection();
             }
 
             // Get the selected row
@@ -536,16 +544,35 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             }
 
             // Check if the date is in the future or more than 7 days in the past
+            DateTime checkDate;
             DateTime currentDate = DateTime.Now;
+            string dateText = gvSelectTravel.SelectedRow.Cells[5].Text;
+
+            if (DateTime.TryParse(dateText, out checkDate))
+            {
+                currentDate = checkDate;
+            }
+
+            // Validate that the travel date is not in the future
             if (travelDate > currentDate)
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel date cannot be in the future.');", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel date cannot be in the future from the current record.');", true);
                 resetTravelDate();
                 return false;
             }
+
+            // Validate that the travel date is not more than 7 days earlier
             if ((currentDate - travelDate).TotalDays > 7)
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel date cannot be more than 7 days earlier than today.');", true);
+                resetTravelDate();
+                return false;
+            }
+
+            // Validate that the travel date is within the same month
+            if (travelDate.Month != currentDate.Month || travelDate.Year != currentDate.Year)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Travel date must be within the same month as the current record.');", true);
                 resetTravelDate();
                 return false;
             }
@@ -576,10 +603,9 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             }
 
             // If all validations pass, return true
-            return true;         
-           
-
+            return true;
         }
+
 
 
         private bool validExpenseEntries()
@@ -594,16 +620,35 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             }
 
             // Check if the date is in the future or more than 7 days in the past
+            DateTime checkDate;
             DateTime currentDate = DateTime.Now;
+            string dateText = gvSelectExpense.SelectedRow.Cells[6].Text;
+
+            if (DateTime.TryParse(dateText, out checkDate))
+            {
+                currentDate = checkDate;
+            }
+
+            // Validate that the expense date is not in the future
             if (expenseDate > currentDate)
             {
-                ShowAlert("Expense date cannot be in the future.");
+                ShowAlert("Expense date cannot be in the future from the current record.");
                 resetExpenseDate();
                 return false;
             }
+
+            // Validate that the expense date is not more than 7 days earlier
             if ((currentDate - expenseDate).TotalDays > 7)
             {
                 ShowAlert("Expense date cannot be more than 7 days earlier than today.");
+                resetExpenseDate();
+                return false;
+            }
+
+            // Validate that the expense date is within the same month
+            if (expenseDate.Month != currentDate.Month || expenseDate.Year != currentDate.Year)
+            {
+                ShowAlert("Expense date must be within the same month as the current record.");
                 resetExpenseDate();
                 return false;
             }
@@ -619,6 +664,7 @@ WHERE(ProjectAssignmenttbl.Assignment_ID = @assignmentID)";
             // If all validations pass, return true
             return true;
         }
+
 
         private void ShowAlert(string message)
         {
