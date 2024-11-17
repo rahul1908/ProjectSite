@@ -16,7 +16,7 @@ namespace ProjectSite.Account
     {
         protected void CreateUser_Click(object sender, EventArgs e)
         {
-            // Define the connection string directly (replace with your actual connection string)
+            // Define the connection string (replace with your actual connection details)
             string connString = "Server=146.230.177.46;Database=G8Wst2024;User Id=G8Wst2024;Password=09ujd";
 
             // SQL query to insert data into Clienttbl
@@ -47,34 +47,53 @@ namespace ProjectSite.Account
                         cmdClient.ExecuteNonQuery();
                     }
 
-                    // Use UserManager to create the ASP.NET user
+                    // Add the user to ASP.NET Identity
                     var userStore = new UserStore<IdentityUser>(new IdentityDbContext());
                     var userManager = new UserManager<IdentityUser>(userStore);
 
-                    // Create the user object
                     var user = new IdentityUser
                     {
                         UserName = ClientEmail.Text,
                         Email = ClientEmail.Text,
-                         LockoutEnabled = true
+                        LockoutEnabled = true
                     };
 
-                    // Hash the password (replace "ClientPassword.Text" with the actual password input)
+                    // Create the user with the password
                     var result = userManager.Create(user, ClientPassword.Text);
 
                     if (result.Succeeded)
                     {
+                        // Create and assign the "Client" role if not already created
+                        var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new IdentityDbContext()));
+
+                        if (!roleManager.RoleExists("Client"))
+                        {
+                            var roleResult = roleManager.Create(new IdentityRole("Client"));
+                            if (!roleResult.Succeeded)
+                            {
+                                transaction.Rollback();
+                                Response.Write("<script>alert('Error creating \"Client\" role.');</script>");
+                                return;
+                            }
+                        }
+
+                        // Assign the user to the "Client" role
+                        userManager.AddToRole(user.Id, "Client");
+
+                        // Commit the transaction
                         transaction.Commit();
-                        Response.Write("<script>alert('Client and user registration successful!');</script>");
+                        Response.Write("<script>alert('Client added and assigned to Client role successfully!');</script>");
                     }
                     else
                     {
+                        // Handle errors from user creation
                         transaction.Rollback();
                         Response.Write("<script>alert('Error: " + string.Join(", ", result.Errors) + "');</script>");
                     }
                 }
                 catch (Exception ex)
                 {
+                    // Rollback the transaction in case of an error
                     transaction.Rollback();
                     Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
                 }
